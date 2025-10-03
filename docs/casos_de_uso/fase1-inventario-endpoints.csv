@@ -1,0 +1,38 @@
+Domínio,Endpoint,Método,Descrição,Dependências,Autenticação,Observações
+Products,/products,GET,Listar todos os produtos (paginado),Nenhuma,Não,"Retorna 30 itens por padrão, suporta limit/skip"
+Products,/products/{id},GET,Obter produto específico,Nenhuma,Não,ID deve existir
+Products,/products/search,GET,Buscar produtos por query,Nenhuma,Não,"Query param: q, suporta filtros"
+Products,/products/categories,GET,Listar todas as categorias,Nenhuma,Não,Retorna array de objetos com slug/name/url
+Products,/products/category-list,GET,Listar nomes de categorias,Nenhuma,Não,Retorna array simples de strings
+Products,/products/category/{slug},GET,Produtos por categoria,Nenhuma,Não,Slug deve existir nas categorias
+Products,/products/add,POST,Adicionar produto (simulado),Nenhuma,Não,FAKE: não persiste dados
+Products,/products/{id},PUT,Atualizar produto (simulado),Nenhuma,Não,FAKE: não persiste dados
+Products,/products/{id},DELETE,Deletar produto (simulado),Nenhuma,Não,FAKE: não persiste dados
+Auth,/auth/login,POST,Login de usuário,Nenhuma,Não,"Retorna accessToken e refreshToken, credenciais de /users"
+Auth,/auth/me,GET,Obter usuário autenticado,/auth/login,Sim,Requer Bearer token no header Authorization
+Auth,/auth/refresh,POST,Renovar access token,/auth/login,Parcial,Pode usar refreshToken ou cookie
+Users,/users,GET,Listar todos os usuários (paginado),Nenhuma,Não,"Retorna 30 itens por padrão, suporta limit/skip"
+Users,/users/{id},GET,Obter usuário específico,Nenhuma,Não,ID deve existir
+Users,/users/search,GET,Buscar usuários,Nenhuma,Não,Query param: q
+Users,/users/filter,GET,Filtrar usuários,Nenhuma,Não,"Suporta key/value (ex: gender=male, age=30)"
+Users,/users/add,POST,Adicionar usuário (simulado),Nenhuma,Não,FAKE: não persiste dados
+Users,/users/{id},PUT,Atualizar usuário (simulado),Nenhuma,Não,FAKE: não persiste dados
+Users,/users/{id},DELETE,Deletar usuário (simulado),Nenhuma,Não,FAKE: não persiste dados
+Carts,/carts,GET,Listar todos os carrinhos,Nenhuma,Não,Retorna 30 itens por padrão
+Carts,/carts/{id},GET,Obter carrinho específico,Nenhuma,Não,ID deve existir
+Carts,/carts/user/{userId},GET,Carrinhos de um usuário,Nenhuma,Não,Retorna carrinhos do userId
+Carts,/carts/add,POST,Adicionar carrinho (simulado),Nenhuma,Não,"FAKE: não persiste, requer userId e products array"
+Carts,/carts/{id},PUT,Atualizar carrinho (simulado),Nenhuma,Não,FAKE: não persiste dados
+Carts,/carts/{id},DELETE,Deletar carrinho (simulado),Nenhuma,Não,FAKE: não persiste dados
+Posts,/posts,GET,Listar todos os posts,Nenhuma,Não,Retorna 30 itens por padrão
+Posts,/posts/{id},GET,Obter post específico,Nenhuma,Não,ID deve existir
+Posts,/posts/user/{userId},GET,Posts de um usuário,Nenhuma,Não,Retorna posts do userId
+Posts,/posts/add,POST,Adicionar post (simulado),Nenhuma,Não,FAKE: não persiste dados
+Posts,/posts/{id},PUT,Atualizar post (simulado),Nenhuma,Não,FAKE: não persiste dados
+Posts,/posts/{id},DELETE,Deletar post (simulado),Nenhuma,Não,FAKE: não persiste dados
+Comments,/comments,GET,Listar todos os comentários,Nenhuma,Não,Retorna 30 itens por padrão
+Comments,/comments/{id},GET,Obter comentário específico,Nenhuma,Não,ID deve existir
+Comments,/comments/post/{postId},GET,Comentários de um post,Nenhuma,Não,Retorna comentários do postId
+Comments,/comments/add,POST,Adicionar comentário (simulado),Nenhuma,Não,FAKE: não persiste dados
+Comments,/comments/{id},PUT,Atualizar comentário (simulado),Nenhuma,Não,FAKE: não persiste dados
+Comments,/comments/{id},DELETE,Deletar comentário (simulado),Nenhuma,Não,FAKE: não persiste dados
