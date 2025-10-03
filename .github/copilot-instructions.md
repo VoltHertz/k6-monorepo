@@ -420,13 +420,14 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 **Sprint 2 (Semana 5) - Busca e Autenticação**:
 - ✅ UC002: Search & Filter Products (6h) - COMPLETO
-- UC003: User Login & Profile (6h + `libs/http/auth.ts`)
+- ✅ UC003: User Login & Profile (6h + `libs/http/auth.ts`) - COMPLETO
 - **Meta**: 90% tráfego coberto, auth helper criado
-- **Progresso**: 1/2 UCs (50% Sprint 2)
+- **Progresso**: 2/2 UCs (100% Sprint 2) ✅ COMPLETO
 
 **Sprint 3 (Semana 6) - Carrinho**:
-- UC005: Cart Operations (Read) (6h + `libs/data/cart-loader.ts`)
+- ✅ UC005: Cart Operations (Read) (6h + `libs/data/cart-loader.ts`) - COMPLETO
 - **Meta**: 100% tráfego transacional, cart metrics implementadas
+- **Progresso**: 1/1 UC (100% Sprint 3) ✅ COMPLETO
 
 **Sprint 4 (Semana 7) - Jornadas**:
 - UC009: User Journey (Unauthenticated) (8h + `libs/scenarios/journey-builder.ts`)
@@ -600,8 +601,8 @@ Antes de considerar um UC completo, verificar:
 ### 📊 Métricas de Progresso
 
 - **Sprint 1**: 3/3 UCs fundação (23% do total - 3/13) ✅ COMPLETO
-- **Sprint 2**: 1/2 UCs busca/auth (31% do total - 4/13) 🚧 EM ANDAMENTO
-- **Sprint 3**: +1 UC carrinho (46% do total - 6/13)
+- **Sprint 2**: 2/2 UCs busca/auth (38% do total - 5/13) ✅ COMPLETO
+- **Sprint 3**: 1/1 UC carrinho (46% do total - 6/13) ✅ COMPLETO
 - **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
 - **Sprint 5**: +2 UCs backoffice (77% do total - 10/13)
 - **Sprint 6**: +3 UCs avançados (100% do total - 13/13)
