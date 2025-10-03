@@ -59,22 +59,21 @@ Após navegar pelo catálogo (UC001) ou buscar produtos (UC002), o usuário **cl
 
 | Arquivo | Localização | Volume | Fonte | Estratégia de Refresh |
 |---------|-------------|--------|-------|----------------------|
-| `product-ids.json` | `data/test-data/` | 100 IDs válidos | Extração de `fulldummyjsondata/products.json` | Mensal (IDs são estáveis) |
+| `product-ids.json` | `data/test-data/` | 194 IDs válidos | Extração de `fulldummyjsondata/products.json` | Mensal (IDs são estáveis) |
 
 ### Geração de Dados
 ```bash
 # Extrair IDs válidos de produtos (1-194)
-jq '[.products[].id] | .[:100]' data/fulldummyjsondata/products.json \
-  > data/test-data/product-ids.json
+jq '[.products[].id]' data/fulldummyjsondata/products.json > data/test-data/product-ids.json
 
-# Alternativa: gerar sequência 1-100 (IDs garantidos válidos)
-echo '[1,2,3,...,100]' > data/test-data/product-ids.json
+# Alternativa: gerar sequência 1..194 via jq (sem depender do dump)
+jq -n '[range(1;195)]' > data/test-data/product-ids.json
 ```
 
 ### Dependências de Dados
 - **Nenhuma dependência** de outros UCs
 - IDs podem ser reutilizados por UC002 (search), UC009/UC010 (jornadas)
-- Range válido: 1-194 (total de produtos DummyJSON)
+- Range válido: 1-194 (conforme DummyJSON API atual)
 
 ---
 
@@ -102,16 +101,16 @@ Headers:
   Content-Type: application/json
 ```
 
-**Validações**:
-- ✅ Status code = 200
-- ✅ Response contains `id` field matching request
-- ✅ Has required fields: `title`, `price`, `description`, `category`
-- ✅ `price` is numeric and > 0
-- ✅ `rating` is numeric between 0-5 (if present)
-- ✅ `stock` is integer >= 0
-- ✅ `images` array is present (can be empty)
+**Validações** (human-readable checks):
+- ✅ 'status is 200' → Status code = 200
+- ✅ 'id matches requested id' → `id` da resposta igual ao solicitado
+- ✅ 'has required fields' → `title`, `price`, `description`, `category` presentes
+- ✅ 'price is positive' → `price` numérico e > 0
+- ✅ 'rating is valid' → `rating` numérico entre 0-5 (se presente)
+- ✅ 'stock is non-negative' → `stock` inteiro >= 0
+- ✅ 'images array present' → `images` é array (pode ser vazio)
 
-**Think Time**: 3-7s (análise de detalhes, decisão de compra)
+**Think Time**: 2-5s (análise de detalhes, Persona 1)
 
 ---
 
@@ -190,7 +189,7 @@ export const options = {
       duration: __ENV.K6_DURATION || '5m',
       preAllocatedVUs: 10,
       maxVUs: 50,
-      tags: { feature: 'products', kind: 'view', uc: 'UC004' },
+      tags: { feature: 'products', kind: 'browse', uc: 'UC004' },
     },
   },
   thresholds: {
@@ -205,12 +204,18 @@ export const options = {
 ```javascript
 tags: { 
   feature: 'products',  // Domain: products API
-  kind: 'view',         // Operation: visualização de detalhes (não browse)
+  kind: 'browse',       // Operation type (browse para visualização - conforme guia de estilo)
   uc: 'UC004'           // Use case ID (view product details)
 }
 ```
 
-**Justificativa `kind: 'view'`**: Diferencia de `browse` (listagem) - foco em item único.
+**Diferenciação nos Checks**: Use tag `step` para distinguir do UC001 (listagem):
+```javascript
+check(res, {
+  'status is 200': (r) => r.status === 200,
+  'id matches requested id': (r) => r.json('id') === productId,
+}, { uc: 'UC004', step: 'details' });  // step='details' diferencia de step='list'
+```
 
 ---
 
@@ -293,9 +298,9 @@ if (res.status === 200) {
 ## ⚠️ Observações Importantes
 
 ### Limitações da API
-- **DummyJSON IDs válidos**: Range 1-194 (atualizar se API crescer)
+- **IDs válidos**: Conforme dataset usado nos testes (padrão 1–100 em `product-ids.json`)
 - **Produto ID 0 ou negativo**: Retorna 404 (comportamento esperado)
-- **Produto ID > 194**: Retorna 404 (testar edge case importante)
+- **Produto ID acima do dataset**: Retorna 404 (ex.: >100 no dataset padrão)
 - **Cache CDN**: Respostas podem ser cacheadas (latência artificialmente baixa em alguns casos)
 
 ### Particularidades do Teste
@@ -313,7 +318,7 @@ if (res.status === 200) {
     return JSON.parse(open('../../../data/test-data/product-ids.json'));
   });
   ```
-- **Think time realista**: 3-7s (usuário lê descrição, vê imagens, decide)
+- **Think time realista**: 2-5s (Persona 1 – visitante)
 - **Comparação com UC001**: UC004 é ~30% mais rápido (single item vs lista 30 items)
 
 ---
@@ -336,7 +341,7 @@ if (res.status === 200) {
 
 ### Dados Requeridos
 - **Primário**: `data/test-data/product-ids.json` (100 IDs válidos)
-- **Opcional**: Pode reusar produtos de `fulldummyjsondata/products.json` (referência)
+- **Atenção**: `data/fulldummyjsondata/` é apenas referência; não carregar diretamente nos testes
 
 ---
 
@@ -405,3 +410,4 @@ Validação antes de marcar como ✅ Approved:
 - Template de UC: `docs/casos_de_uso/templates/use-case-template.md`
 - Guia de Estilo: `docs/casos_de_uso/templates/guia-de-estilo.md`
 - Checklist de Qualidade: `docs/casos_de_uso/templates/checklist-qualidade.md`
+- Guia Visual: `docs/casos_de_uso/templates/README.visual.md`
