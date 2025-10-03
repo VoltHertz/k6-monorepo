@@ -358,48 +358,63 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 ---
 
-### Fase 4: Escrita dos Casos de Uso (Semanas 4-7)
+### Fase 4: Escrita dos Casos de Uso (Semanas 4-9)
 
 **Objetivo**: Documentar todos os casos de uso priorizados
 
-**Sprint 1 (Semana 4) - Casos Fundamentais**:
-- UC001: Browse Products Catalog
-- UC002: Search & Filter Products
-- **Meta**: 2 UCs completos, validados, com massa de teste identificada
+**Sprint 1 (Semana 4) - Fundação**:
+- UC001: Browse Products Catalog (4h)
+- UC004: View Product Details (3h)
+- UC007: Browse by Category (4h)
+- **Meta**: 3 UCs completos, 60% tráfego coberto, dados de teste identificados
 
-**Sprint 2 (Semana 5) - Autenticação**:
-- UC003: User Login & Profile
-- UC004: List Users (Admin)
-- **Meta**: Fluxos de auth documentados, tokens mapeados
+**Sprint 2 (Semana 5) - Busca e Autenticação**:
+- UC002: Search & Filter Products (6h)
+- UC003: User Login & Profile (6h + `libs/http/auth.ts`)
+- **Meta**: 90% tráfego coberto, auth helper criado
 
-**Sprint 3 (Semana 6) - Operações Principais**:
-- UC005: Cart Operations (Read)
-- UC006: Cart Operations (Write - Simulated)
-- **Meta**: CRUD completo, limitações de simulação documentadas
+**Sprint 3 (Semana 6) - Carrinho**:
+- UC005: Cart Operations (Read) (6h + `libs/data/cart-loader.ts`)
+- **Meta**: 100% tráfego transacional, cart metrics implementadas
 
 **Sprint 4 (Semana 7) - Jornadas**:
-- UC007: User Journey (não autenticado)
-- UC008: User Journey (autenticado)
-- UC009: Mixed Workload
-- **Meta**: Cenários compostos com think times realistas
+- UC009: User Journey (Unauthenticated) (8h + `libs/scenarios/journey-builder.ts`)
+- UC010: User Journey (Authenticated) (10h)
+- **Meta**: Fluxos end-to-end, think times realistas
+
+**Sprint 5 (Semana 8) - Backoffice**:
+- UC008: List Users (Admin) (5h)
+- UC013: Content Moderation (Posts/Comments) (4h)
+- **Meta**: Admin operations, moderação completa
+
+**Sprint 6 (Semana 9) - Avançados**:
+- UC006: Cart Operations (Write - Simulated) (6h)
+- UC012: Token Refresh & Session Management (5h)
+- UC011: Mixed Workload (Realistic Traffic) (12h + `libs/scenarios/workload-mixer.ts`)
+- **Meta**: Stress/soak validados, 100% UCs completos
 
 **Atividades por UC**:
 1. Descrever perfil de usuário e objetivo de negócio
 2. Listar endpoints envolvidos com métodos HTTP
-3. Definir SLOs específicos (baseado em baseline)
+3. Definir SLOs específicos (baseado em baseline Fase 1)
 4. Detalhar fluxo passo a passo com validações
 5. Especificar dados de teste necessários
 6. Documentar headers, payloads, query params
 7. Identificar edge cases e cenários de erro
+8. Mapear dependências de outros UCs
+9. Documentar libs/helpers criados (se aplicável)
 
 **Entregáveis por Sprint**:
-- X casos de uso documentados em markdown
+- X casos de uso documentados em markdown (13 total)
 - Massa de teste identificada (ainda não gerada)
 - Review de qualidade com checklist
+- Libs/helpers documentados (auth.ts, journey-builder.ts, etc.)
+
+**Esforço Total**: 81 horas (~2 semanas fulltime ou 6 sprints)
 
 ---
 
-### Fase 5: Validação e Refinamento (Semana 8)
+### Fase 5: Validação e Refinamento (Semana 10)
 
 **Objetivo**: Revisar e ajustar casos de uso antes da implementação
 
@@ -425,13 +440,13 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
    - Atualizar dependências descobertas
 
 **Entregáveis**:
-- Todos os UCs revisados e aprovados
+- Todos os 13 UCs revisados e aprovados
 - Ata de validação com stakeholders
 - Notas de viabilidade técnica
 
 ---
 
-### Fase 6: Handoff para Implementação (Semana 9)
+### Fase 6: Handoff para Implementação (Semana 11)
 
 **Objetivo**: Preparar documentação para time de implementação
 
@@ -492,6 +507,12 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 ## ⚠️ Observações Importantes
 [Limitações, dependências, particularidades]
+
+## 🔗 Dependências
+[UCs dependentes, libs necessárias, dados requeridos]
+
+## 📂 Libs/Helpers Criados
+[Se o UC criar novas libs, documentar aqui com path e funções]
 ```
 
 ---
@@ -512,25 +533,27 @@ Antes de considerar um UC completo, verificar:
 - [ ] Dependências de outros UCs estão listadas
 - [ ] Limitações da API (ex: fake POST) estão documentadas
 - [ ] Arquivo nomeado corretamente: `UC00X-kebab-case.md`
+- [ ] Libs/helpers criados estão documentados (se aplicável)
 
 ---
 
 ### 🎯 Ordem de Escrita Recomendada
 
-1. **Começar pelos mais simples**: Browse, Search (sem auth)
-2. **Depois auth**: Login, Profile (fundação para outros)
-3. **CRUD principais**: Carts, Users (operações isoladas)
-4. **Jornadas simples**: Combinar 2-3 UCs
-5. **Jornadas complexas**: Autenticação + múltiplas operações
-6. **Casos avançados**: Resiliência, validações complexas
+1. **Fundação (Sprint 1)**: UC001, UC004, UC007 (sem auth, simples)
+2. **Busca + Auth (Sprint 2)**: UC002, UC003 (criar libs/http/auth.ts)
+3. **Carrinho (Sprint 3)**: UC005 (depende de auth)
+4. **Jornadas (Sprint 4)**: UC009, UC010 (criar libs/scenarios/journey-builder.ts)
+5. **Backoffice (Sprint 5)**: UC008, UC013 (admin operations)
+6. **Avançados (Sprint 6)**: UC006, UC012, UC011 (stress/soak, criar libs/scenarios/workload-mixer.ts)
 
 ### 📊 Métricas de Progresso
 
-- **Sprint 1**: 2 UCs fundamentais (10% do total)
-- **Sprint 2**: +2 UCs auth (30% do total)
-- **Sprint 3**: +2 UCs CRUD (50% do total)
-- **Sprint 4**: +3 UCs jornadas (80% do total)
-- **Refinamento**: +2 UCs avançados (100%)
+- **Sprint 1**: 3 UCs fundação (23% do total - 3/13)
+- **Sprint 2**: +2 UCs busca/auth (38% do total - 5/13)
+- **Sprint 3**: +1 UC carrinho (46% do total - 6/13)
+- **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
+- **Sprint 5**: +2 UCs backoffice (77% do total - 10/13)
+- **Sprint 6**: +3 UCs avançados (100% do total - 13/13)
 
 ---
 
