@@ -54,7 +54,6 @@ This monorepo implements a **production-ready performance testing framework** us
 | [📝 UC Template](docs/casos_de_uso/templates/use-case-template.md) | ✅ | 15 sections, ~400 lines |
 | [🎨 Style Guide](docs/casos_de_uso/templates/guia-de-estilo.md) | ✅ | Naming, writing, formatting conventions |
 | [✅ Quality Checklist](docs/casos_de_uso/templates/checklist-qualidade.md) | ✅ | 78 validation items, approval criteria |
-| [📊 Visual Guide](docs/casos_de_uso/templates/README.visual.md) | ✅ | ASCII diagrams, examples |
 
 **Key Insights**:
 - **Standardized structure**: 15-section template for all UCs
@@ -62,7 +61,22 @@ This monorepo implements a **production-ready performance testing framework** us
 - **Approval flow**: Draft → Review → Approved → Implementation
 - **Documentation**: ~2000 lines of standards and examples
 
-### Next: Phase 4 - UC Documentation (Sprints 1-6) 🔄
+### Phase 4: UC Documentation - Sprint 1 ✅ COMPLETE
+
+| Use Case | Status | Description | Effort |
+|----------|--------|-------------|--------|
+| [UC001 - Browse Products Catalog](docs/casos_de_uso/UC001-browse-products-catalog.md) | ✅ | List products with pagination | 4h |
+| [UC004 - View Product Details](docs/casos_de_uso/UC004-view-product-details.md) | ✅ | View single product by ID | 3h |
+| [UC007 - Browse by Category](docs/casos_de_uso/UC007-browse-by-category.md) | ✅ | Navigate products by category | 4h |
+
+**Sprint 1 Results**:
+- **3/3 UCs complete** (100% Sprint 1)
+- **Coverage**: 60% traffic (anonymous visitors - Persona 1)
+- **8 endpoints documented** (products domain)
+- **All UCs validated** against Phase 1-3 priority inputs
+- **Quality**: 100% checklist compliance, explicit alignment validation
+
+### Next: Phase 4 - Sprint 2 (Search + Auth) 🔄
 
 ## 🏗️ Architecture Highlights
 
@@ -179,12 +193,12 @@ k6 run --env=ci configs/scenarios/smoke.yaml
 
 1. ✅ **Phase 1: Analysis** - Endpoints, personas, SLOs baseline (3/3 deliverables)
 2. ✅ **Phase 2: Prioritization** - Criticality matrix, roadmap, dependencies (3/3 deliverables)
-3. ✅ **Phase 3: Templates** - UC template, style guide, quality checklist (4/4 deliverables)
-4. 🔄 **Phase 4: Writing** - Document 13 use cases across 6 sprints (0/13 UCs)
-5. 🔄 **Phase 5: Validation** - Stakeholder review, viability tests (0/3 deliverables)
-6. 🔄 **Phase 6: Handoff** - Generate test data, implementation guide (0/3 deliverables)
+3. ✅ **Phase 3: Templates** - UC template, style guide, quality checklist (3/3 deliverables)
+4. 🔄 **Phase 4: Writing** - Document 13 use cases across 6 sprints (3/13 UCs - Sprint 1 complete ✅)
+5. ⏸️ **Phase 5: Validation** - Stakeholder review, viability tests (0/3 deliverables)
+6. ⏸️ **Phase 6: Handoff** - Generate test data, implementation guide (0/3 deliverables)
 
-**Progress**: 10/26 items complete (38% - 3 phases done, 11-week timeline)
+**Progress**: 12/29 items complete (41% - 3 phases + Sprint 1 done, 11-week timeline)
 
 ## 🔑 Critical Patterns
 

@@ -4,7 +4,44 @@
 
 This is an **enterprise-grade k6 performance testing monorepo** using TypeScript, designed for 10+ years of maintainability. We test DummyJSON API endpoints with automated quality gates, CI/CD integration, and comprehensive observability.
 
-## 🔄 Git Workflow & Best Practices (CRITICAL)
+## 📚 Documentation Strategy (CRITICAL)
+
+### README.md (Root & Subdirectories)
+**Purpose**: Demonstrate the **current state** of the project for external readers (developers, stakeholders, contributors)
+
+**Content Focus**:
+- Current progress and status of phases/sprints
+- Completed deliverables with links
+- Quick start guides and usage examples
+- Architecture highlights and SLO targets
+- How to run tests and CI/CD pipelines
+- Project structure and navigation
+
+**Audience**: Anyone viewing the repository (GitHub, new team members, external contributors)
+
+**Update Trigger**: After completing sprints, phases, or major milestones
+
+### .github/copilot-instructions.md (This File)
+**Purpose**: Instruct the **AI agent (GitHub Copilot)** on development guidelines, patterns, and workflow
+
+**Content Focus**:
+- ADRs (Architecture Decision Records)
+- Coding standards and naming conventions
+- Git workflow (commit strategy, push rules, branch management)
+- Quality gates and testing patterns
+- Phase/sprint execution details for AI-driven development
+- Critical patterns and anti-patterns
+- Template usage and validation checklists
+
+**Audience**: GitHub Copilot AI agent (Claude, GPT-4, etc.)
+
+**Update Trigger**: After phase completion, when new patterns emerge, or workflow changes
+
+**Rules**: 
+1. Keep both files synchronized on **progress metrics** but avoid duplicating detailed implementation instructions in README.md
+2. **CRITICAL**: These are the ONLY two documentation files with project-wide scope. NO other files should be created with equivalent functions (status tracking, guidelines, overview). Any attempt to create redundant documentation files (e.g., additional READMEs, visual guides, roadmap duplicates) must be REJECTED to prevent documentation sprawl and maintenance overhead.
+
+---## 🔄 Git Workflow & Best Practices (CRITICAL)
 
 ### Commit Strategy
 - **ALWAYS commit after each logical change** (file creation, feature implementation, bug fix)

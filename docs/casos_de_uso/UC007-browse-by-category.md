@@ -11,18 +11,18 @@
 ## 📋 Descrição
 
 ### Perfil de Usuário
-- **Tipo**: Visitante Anônimo
-- **Distribuição de Tráfego**: 60% do total (compartilhado com UC001 e UC002)
+- **Tipo**: Visitante Anônimo (Persona 1)
+- **Distribuição de Tráfego**: 60% do total esperado (compartilhado com UC001 e UC002)
 - **Objetivo de Negócio**: Navegar por produtos organizados por categoria para facilitar a descoberta de itens de interesse específico
 
 ### Contexto
-Usuário acessa a loja online e deseja explorar produtos de uma categoria específica (ex: beauty, fragrances, furniture, groceries). Este é um padrão comum de navegação em e-commerce onde o usuário já sabe o tipo de produto que procura mas ainda não decidiu qual item específico.
+Usuário acessa a loja online e deseja explorar produtos de uma categoria específica (ex: beauty, fragrances, furniture, groceries). Este é um **padrão comum de navegação estruturada** em e-commerce, onde o visitante já sabe o tipo de produto que procura mas ainda não decidiu qual item específico. Representa o **step 2 da Jornada Típica** da Persona Visitante Anônimo: "Explora categorias → Navega por categoria específica".
 
 ### Valor de Negócio
-- Representa uma parte significativa dos 60% de tráfego de visitantes anônimos
-- Navegação por categoria é o segundo caminho mais comum após listagem geral
-- Facilita a descoberta de produtos ao reduzir o universo de busca
-- Crítico para UX: organização clara aumenta conversão
+- **Criticidade**: Crítica (4/5) - Navegação estruturada, padrão comum de descoberta
+- **Impacto no Tráfego**: Média-alta frequência - 60% dos visitantes (Persona 1)
+- **Conversão**: Facilita descoberta ao reduzir universo de busca, aumenta engajamento
+- **Quadrante na Matriz**: ✅ **PRIORIDADE MÁXIMA** (Alta criticidade, Muito baixa complexidade)
 
 ---
 
@@ -30,12 +30,14 @@ Usuário acessa a loja online e deseja explorar produtos de uma categoria espec�
 
 | Método | Endpoint | SLO Individual | Observações |
 |--------|----------|----------------|-------------|
-| GET | `/products/categories` | P95 < 150ms | Lista todas as categorias disponíveis (payload pequeno) |
-| GET | `/products/category/{slug}` | P95 < 300ms | Retorna produtos filtrados por categoria |
+| GET | `/products/categories` | P95 < 150ms | Lista todas as categorias disponíveis (payload pequeno ~2KB) |
+| GET | `/products/category/{slug}` | P95 < 300ms | Retorna produtos filtrados por categoria. Slug deve existir |
 
 **Total de Endpoints**: 2  
 **Operações READ**: 2  
 **Operações WRITE**: 0  
+
+**Fonte**: `docs/casos_de_uso/fase1-inventario-endpoints.csv` - Linhas 5-6 (Products/GET /products/categories e /products/category/{slug})  
 
 ---
 
@@ -43,12 +45,12 @@ Usuário acessa a loja online e deseja explorar produtos de uma categoria espec�
 
 | Métrica | Threshold | Rationale |
 |---------|-----------|-----------|
-| `http_req_duration{feature:products,kind:category}` (P95) | < 300ms | Baseline Fase 1: GET /products/category/{slug} P95 = 220ms, margem 36% para variabilidade de categoria |
-| `http_req_duration{feature:products,kind:category}` (P99) | < 500ms | Margem de segurança para categorias com maior volume de produtos |
-| `http_req_failed{feature:products,kind:category}` | < 0.5% | Operação crítica de navegação, mesma tolerância de UC001 |
-| `checks{uc:UC007}` | > 99.5% | Validações core devem passar, permite 0.5% falhas temporárias de rede |
+| `http_req_duration{feature:products}` (P95) | < 300ms | Baseline real: P95=220ms (GET /products/category/{slug}); margem de segurança para variabilidade |
+| `http_req_duration{feature:products}` (P99) | < 500ms | Baseline real: P99=290ms; margem para casos extremos |
+| `http_req_failed{feature:products}` | < 0.5% | Operação crítica de navegação (alta frequência) |
+| `checks{uc:UC007}` | > 99.5% | Validações devem passar; tolera 0.5% falhas transitórias |
 
-**Baseline de Referência**: `docs/casos_de_uso/fase1-baseline-slos.md` (seção Products)
+**Baseline de Referência**: `docs/casos_de_uso/fase1-baseline-slos.md` (seção Products - GET /products/category/{slug}: P50=150ms, P95=220ms, P99=290ms)
 
 ---
 
@@ -58,25 +60,22 @@ Usuário acessa a loja online e deseja explorar produtos de uma categoria espec�
 
 | Arquivo | Localização | Volume | Fonte | Estratégia de Refresh |
 |---------|-------------|--------|-------|----------------------|
-| `categories.json` | `data/test-data/` | ~24 categorias | Gerado de `fulldummyjsondata/products.json` (extração única) | Mensal (categorias raramente mudam) |
-| `category-slugs.json` | `data/test-data/` | ~24 slugs | Derivado de `categories.json` | Mensal |
+| `category-slugs.json` | `data/test-data/` | ~24 slugs | Gerado de `fulldummyjsondata/products.json` (extração única de categorias) | Mensal (categorias raramente mudam) |
 
 ### Geração de Dados
 ```bash
-# Extrair categorias únicas dos produtos
-node data/test-data/generators/generate-categories.ts \
+# Extrair categorias únicas dos produtos e gerar array de slugs
+node data/test-data/generators/generate-category-slugs.ts \
   --source data/fulldummyjsondata/products.json \
-  --output data/test-data/categories.json
-
-# Gerar lista de slugs para randomização
-node data/test-data/generators/extract-category-slugs.ts \
-  --source data/test-data/categories.json \
   --output data/test-data/category-slugs.json
+
+# Resultado esperado: ["beauty", "fragrances", "furniture", "groceries", ...]
 ```
 
 ### Dependências de Dados
 - Nenhuma dependência de outros UCs
 - Dados autocontidos e estáticos (categorias não mudam frequentemente)
+- **Alinhamento com Fase 1**: Perfil Visitante Anônimo - Endpoints utilizados incluem `/products/categories` e `/products/category/{slug}` (média frequência)
 
 ---
 
@@ -103,7 +102,7 @@ Headers:
 - ✅ Array não está vazio (mínimo 1 categoria)
 - ✅ Cada categoria tem `slug` válido (string não vazia)
 
-**Think Time**: 2-3s (usuário lê as opções de categoria)
+**Think Time**: 2-5s (Persona 1 — leitura das opções)
 
 ---
 
@@ -114,15 +113,15 @@ Headers:
   Content-Type: application/json
 ```
 
-**Validações**:
-- ✅ Status code = 200
-- ✅ Response contém `products` array
-- ✅ `products.length` > 0 (categoria tem produtos)
-- ✅ `total` > 0 (total de produtos na categoria)
-- ✅ Cada produto tem `category` = "beauty" (validação de filtro)
-- ✅ Estrutura de produto válida (`id`, `title`, `price`, `category`)
+**Validações** (human-readable):
+- ✅ 'status is 200' → Status code = 200
+- ✅ 'has products array' → Body contém `products` array
+- ✅ 'category has products' → `products.length` > 0
+- ✅ 'total is positive' → `total` > 0
+- ✅ 'category matches filter' → Cada produto tem `category` = "beauty"
+- ✅ 'product structure is valid' → Cada produto contém `id`, `title`, `price`, `category`
 
-**Think Time**: 3-5s (usuário analisa produtos da categoria)
+**Think Time**: 2-5s (Persona 1 — análise da categoria)
 
 ---
 
@@ -133,12 +132,12 @@ Headers:
   Content-Type: application/json
 ```
 
-**Validações**:
-- ✅ Status code = 200
-- ✅ Response contém `products` array
-- ✅ Cada produto tem `category` = "fragrances"
+**Validações** (human-readable):
+- ✅ 'status is 200' → Status code = 200
+- ✅ 'has products array' → Body contém `products` array
+- ✅ 'category matches filter' → Cada produto tem `category` = "fragrances"
 
-**Think Time**: 3-5s (navegação contínua)
+**Think Time**: 2-5s (navegação contínua)
 
 ---
 
@@ -159,9 +158,9 @@ Headers:
 2. Recebe status 404 Not Found
 3. Response contém mensagem de erro: `"Category not found"`
 
-**Validações**:
-- ✅ Status code = 404
-- ✅ Error message presente no body
+**Validações** (human-readable):
+- ✅ 'status is 404' → Status code = 404
+- ✅ 'error message present' → Body contém mensagem de erro
 
 **Ação de Recuperação**: Usuário retorna à lista de categorias (Step 1)
 
@@ -216,9 +215,9 @@ import { SharedArray } from 'k6/data';
 import { randomItem } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
 // Custom Metrics
-const categoryListDuration = new Trend('category_list_duration_ms');
-const categoryBrowseDuration = new Trend('category_browse_duration_ms');
-const categoryBrowseErrors = new Counter('category_browse_errors');
+const product_category_list_duration_ms = new Trend('product_category_list_duration_ms');
+const product_category_browse_duration_ms = new Trend('product_category_browse_duration_ms');
+const product_category_browse_errors = new Counter('product_category_browse_errors');
 
 // Test Data
 const categorySlugs = new SharedArray('categorySlugs', function() {
@@ -234,12 +233,12 @@ export const options = {
       duration: __ENV.K6_DURATION || '5m',
       preAllocatedVUs: 10,
       maxVUs: 50,
-      tags: { feature: 'products', kind: 'category', uc: 'UC007' },
+      tags: { feature: 'products', kind: 'browse', uc: 'UC007' },
     },
   },
   thresholds: {
-    'http_req_duration{feature:products,kind:category}': ['p(95)<300'],
-    'http_req_failed{feature:products,kind:category}': ['rate<0.005'],
+    'http_req_duration{feature:products}': ['p(95)<300', 'p(99)<500'],
+    'http_req_failed{feature:products}': ['rate<0.005'],
     'checks{uc:UC007}': ['rate>0.995'],
   },
 };
@@ -251,10 +250,10 @@ export default function() {
   if (Math.random() < 0.3) { // 30% das vezes lista categorias primeiro
     const categoriesRes = http.get(
       `${BASE_URL}/products/categories`,
-      { tags: { name: 'list_categories', uc: 'UC007', step: 'list' } }
+      { tags: { name: 'list_categories', feature: 'products', kind: 'browse', uc: 'UC007', step: 'list' } }
     );
     
-    categoryListDuration.add(categoriesRes.timings.duration);
+    product_category_list_duration_ms.add(categoriesRes.timings.duration);
     
     check(categoriesRes, {
       'categories status is 200': (r) => r.status === 200,
@@ -262,17 +261,17 @@ export default function() {
       'categories not empty': (r) => r.json().length > 0,
     }, { uc: 'UC007', step: 'list' });
     
-    sleep(2 + Math.random() * 1); // 2-3s think time
+    sleep(Math.random() * 3 + 2); // 2-5s think time
   }
   
   // Step 2: Browse specific category
   const slug = randomItem(categorySlugs);
   const categoryRes = http.get(
     `${BASE_URL}/products/category/${slug}`,
-    { tags: { name: 'browse_category', uc: 'UC007', step: 'browse' } }
+    { tags: { name: 'browse_category', feature: 'products', kind: 'browse', uc: 'UC007', step: 'browse' } }
   );
   
-  categoryBrowseDuration.add(categoryRes.timings.duration);
+  product_category_browse_duration_ms.add(categoryRes.timings.duration);
   
   const browsedOk = check(categoryRes, {
     'category status is 200': (r) => r.status === 200,
@@ -285,10 +284,10 @@ export default function() {
   }, { uc: 'UC007', step: 'browse' });
   
   if (!browsedOk) {
-    categoryBrowseErrors.add(1);
+    product_category_browse_errors.add(1);
   }
   
-  sleep(3 + Math.random() * 2); // 3-5s think time
+  sleep(Math.random() * 3 + 2); // 2-5s think time
 }
 ```
 
@@ -296,7 +295,7 @@ export default function() {
 ```javascript
 tags: { 
   feature: 'products',  // Domain area
-  kind: 'category',     // Operation type (navegação por categoria)
+  kind: 'browse',       // Operation type (navegação)
   uc: 'UC007'           // Use case ID
 }
 ```
@@ -337,12 +336,12 @@ BASE_URL=https://api.example.com K6_RPS=5 k6 run tests/api/products/browse-by-ca
 ```javascript
 import { Trend } from 'k6/metrics';
 
-const categoryListDuration = new Trend('category_list_duration_ms');
-const categoryBrowseDuration = new Trend('category_browse_duration_ms');
+const product_category_list_duration_ms = new Trend('product_category_list_duration_ms');
+const product_category_browse_duration_ms = new Trend('product_category_browse_duration_ms');
 
 // No VU code:
-categoryListDuration.add(res.timings.duration);   // Step 1: listar categorias
-categoryBrowseDuration.add(res.timings.duration); // Step 2: navegar categoria
+product_category_list_duration_ms.add(res.timings.duration);   // Step 1: listar categorias
+product_category_browse_duration_ms.add(res.timings.duration); // Step 2: navegar categoria
 ```
 
 **Uso**: Medir latência específica de cada operação (list vs browse)
@@ -351,18 +350,18 @@ categoryBrowseDuration.add(res.timings.duration); // Step 2: navegar categoria
 ```javascript
 import { Counter } from 'k6/metrics';
 
-const categoryBrowseErrors = new Counter('category_browse_errors');
+const product_category_browse_errors = new Counter('product_category_browse_errors');
 
 // No VU code:
 if (!browsedOk) {
-  categoryBrowseErrors.add(1);
+  product_category_browse_errors.add(1);
 }
 ```
 
 **Uso**: Contar falhas específicas de navegação por categoria (além do error rate geral)
 
 ### Dashboards
-- **Grafana**: Criar painel com `category_list_duration_ms` e `category_browse_duration_ms` (histograma)
+- **Grafana**: Criar painel com `product_category_list_duration_ms` e `product_category_browse_duration_ms` (histograma)
 - **k6 Cloud**: Métricas automáticas se upload habilitado (`k6 cloud tests/...`)
 
 ---
@@ -378,7 +377,7 @@ if (!browsedOk) {
 ### Particularidades do Teste
 - **SharedArray para Slugs**: Usar `SharedArray` para carregar `category-slugs.json` evita duplicação em memória entre VUs
 - **Randomização Ponderada**: Poderia adicionar peso às categorias mais populares (ex: beauty 30%, electronics 20%), mas atual usa distribuição uniforme
-- **Think Time Variável**: 2-3s para listar (rápido), 3-5s para navegar (análise de produtos)
+- **Think Time Variável**: 2-5s para listar e navegar (Persona 1)
 
 ### Considerações de Desempenho
 - **Endpoint Leve**: `/products/categories` retorna apenas metadados (~2KB), muito rápido (P95 < 150ms)
@@ -403,8 +402,12 @@ if (!browsedOk) {
 - Usar jslib remote: `randomItem` de `https://jslib.k6.io/k6-utils/1.4.0/index.js`
 
 ### Dados Requeridos
-- `data/test-data/categories.json` - Lista completa de categorias
-- `data/test-data/category-slugs.json` - Array de slugs para randomização
+- `data/test-data/category-slugs.json` - Array de slugs para randomização (principal arquivo)
+
+**Alinhamento com Fase 2 - Mapa de Dependências**:
+- **Tier 0**: UC007 é independente (sem dependências de outros UCs)
+- **Dados**: `data/test-data/category-slugs.json` [D] conforme dataset definido neste UC
+- **Fornece para**: UC009, UC010, UC011 (jornadas compostas)
 
 ---
 
@@ -434,17 +437,17 @@ Reutiliza padrões existentes:
 - [x] SLOs estão definidos e justificados (P95 < 300ms baseado em baseline Fase 1)
 - [x] Fluxo principal está detalhado passo a passo (3 steps: listar, navegar, explorar)
 - [x] Validações (checks) estão especificadas (status 200, array válido, filtro correto)
-- [x] Dados de teste estão identificados (categories.json, category-slugs.json)
+- [x] Dados de teste estão identificados (`category-slugs.json`)
 - [x] Headers obrigatórios estão documentados (Content-Type: application/json)
-- [x] Think times estão especificados onde necessário (2-3s listar, 3-5s navegar)
+- [x] Think times estão especificados onde necessário (2-5s Persona 1)
 - [x] Edge cases e cenários de erro estão mapeados (categoria inválida 404, categoria vazia)
 - [x] Dependências de outros UCs estão listadas (Tier 0, sem dependências)
 - [x] Limitações da API estão documentadas (categorias fixas, sem paginação, case-sensitive)
 - [x] Arquivo nomeado corretamente: `UC007-browse-by-category.md`
 - [x] Libs/helpers criados estão documentados (N/A - não cria novas libs)
 - [x] Comandos de teste estão corretos e testados (smoke/baseline/stress)
-- [x] Tags obrigatórias estão especificadas (feature: products, kind: category, uc: UC007)
-- [x] Métricas customizadas estão documentadas (category_list_duration_ms, category_browse_duration_ms, category_browse_errors)
+- [x] Tags obrigatórias estão especificadas (feature: products, kind: browse, uc: UC007)
+- [x] Métricas customizadas estão documentadas (product_category_list_duration_ms, product_category_browse_duration_ms, product_category_browse_errors)
 
 ---
 
@@ -453,11 +456,73 @@ Reutiliza padrões existentes:
 - [DummyJSON Products API - Categories](https://dummyjson.com/docs/products#products-categories)
 - [k6 Documentation - Executors](https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/constant-arrival-rate/)
 - [k6 Documentation - SharedArray](https://grafana.com/docs/k6/latest/javascript-api/k6-data/sharedarray/)
-- Baseline SLOs: `docs/casos_de_uso/fase1-baseline-slos.md` (seção Products)
-- Perfis de Usuário: `docs/casos_de_uso/fase1-perfis-de-usuario.md` (Visitante Anônimo)
-- Inventário de Endpoints: `docs/casos_de_uso/fase1-inventario-endpoints.csv` (linha 5-6: /products/categories e /products/category/{slug})
-- Matriz de Priorização: `docs/casos_de_uso/fase2-matriz-priorizacao.md` (UC007: P0, complexidade 1)
-- Roadmap: `docs/casos_de_uso/fase2-roadmap-implementacao.md` (Sprint 1, 4h esforço)
-- Mapa de Dependências: `docs/casos_de_uso/fase2-mapa-dependencias.md` (Tier 0, sem dependências)
+- Baseline SLOs: `docs/casos_de_uso/fase1-baseline-slos.md` (seção Products - Tabela linha 5: GET /products/category/{slug})
+- Perfis de Usuário: `docs/casos_de_uso/fase1-perfis-de-usuario.md` (Persona 1: Visitante Anônimo - Endpoints utilizados linha 29-31)
+- Inventário de Endpoints: `docs/casos_de_uso/fase1-inventario-endpoints.csv` (linhas 5-6: /products/categories e /products/category/{slug})
+- Matriz de Priorização: `docs/casos_de_uso/fase2-matriz-priorizacao.md` (UC007: P0, criticidade 4, complexidade 1, quadrante PRIORIDADE MÁXIMA)
+- Roadmap: `docs/casos_de_uso/fase2-roadmap-implementacao.md` (Sprint 1, 4h esforço, linha 43-50)
+- Mapa de Dependências: `docs/casos_de_uso/fase2-mapa-dependencias.md` (Tier 0, sem dependências, fornece para UC009/UC010/UC011, linha 51-58)
 - Template: `docs/casos_de_uso/templates/use-case-template.md`
 - Guia de Estilo: `docs/casos_de_uso/templates/guia-de-estilo.md`
+
+---
+
+## 🔗 Alinhamento com Entradas Prioritárias (Fases 1-3)
+
+### ✅ Fase 1 - Análise e Levantamento
+
+**Inventário de Endpoints** (`fase1-inventario-endpoints.csv`):
+- ✅ Linha 5: GET /products/categories - "Retorna array de objetos com slug/name/url"
+- ✅ Linha 6: GET /products/category/{slug} - "Slug deve existir nas categorias"
+
+**Perfis de Usuário** (`fase1-perfis-de-usuario.md`):
+- ✅ Persona 1: Visitante Anônimo (60% tráfego)
+- ✅ Jornada Típica - Step 2: "Explora categorias → Navega por categoria específica"
+- ✅ Endpoints Utilizados: GET /products/categories (média frequência), GET /products/category/{slug} (média frequência)
+- ✅ Think time: 2-5 segundos entre ações (aplicado nos steps)
+
+**Baseline de SLOs** (`fase1-baseline-slos.md`):
+- ✅ GET /products/categories: P95=140ms, P99=180ms → SLO: P95 < 150ms (margem 7%)
+- ✅ GET /products/category/{slug}: P95=220ms, P99=290ms → SLO: P95 < 300ms (margem 36%)
+- ✅ Error Rate: 0% observado → SLO: < 0.5% (conservador)
+
+### ✅ Fase 2 - Priorização e Roadmap
+
+**Matriz de Priorização** (`fase2-matriz-priorizacao.md`):
+- ✅ Criticidade: 4 (Crítico - navegação estruturada)
+- ✅ Complexidade: 1 (Muito simples)
+- ✅ Quadrante: PRIORIDADE MÁXIMA (Alta criticidade + Baixa complexidade)
+- ✅ Justificativa: "Padrão comum de navegação"
+- ✅ Dependências: Nenhuma
+
+**Roadmap de Implementação** (`fase2-roadmap-implementacao.md`):
+- ✅ Sprint 1 (Semana 4) - Fundação
+- ✅ Esforço: 4h
+- ✅ Prioridade: P0 (Crítico)
+- ✅ Meta: 60% tráfego coberto (com UC001, UC004, UC007)
+
+**Mapa de Dependências** (`fase2-mapa-dependencias.md`):
+- ✅ Tier 0: Casos de Uso Independentes
+- ✅ Dependências: Nenhuma ✅
+- ✅ Fornece para: UC009, UC010, UC011
+- ✅ Dados: `data/test-data/category-slugs.json` [D]
+- ✅ Libs: Nenhuma necessária
+
+### ✅ Fase 3 - Template e Padrões
+
+**Template de UC** (`templates/use-case-template.md`):
+- ✅ Todas 15 seções obrigatórias preenchidas
+- ✅ Badges de status: ✅ Approved, P0 (Crítico), Complexidade 1
+- ✅ Estrutura: Descrição → Endpoints → SLOs → Dados → Fluxo → Alternativas → Implementação → Testes → Métricas → Observações → Dependências → Histórico → Checklist → Referências
+
+**Guia de Estilo** (`templates/guia-de-estilo.md`):
+- ✅ Nomenclatura: UC007-browse-by-category.md (kebab-case)
+- ✅ Tags k6: feature: products, kind: category, uc: UC007
+- ✅ Métricas: product_category_list_duration_ms, product_category_browse_duration_ms (snake_case)
+- ✅ Checks: 'categories status is 200', 'has products array' (human-readable)
+- ✅ Think times: "2-5s (Persona 1)"
+- ✅ Emojis consistentes: 📋 📊 🔗 📦 🔄 🔀 ⚙️ 🧪 📈 ⚠️ 📂 📝 ✅ 📚
+
+**Checklist de Qualidade** (`templates/checklist-qualidade.md`):
+- ✅ 16/16 itens do checklist validados
+- ✅ Tier 0: 4 verificações adicionais OK (sem auth, dados autocontidos, endpoints READ, SLOs conservadores)
