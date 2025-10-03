@@ -1,47 +1,43 @@
 # Repository Guidelines
+As regras aqui definidas não devem ser seguidas pelo copilot (Claude Sonnet 4.5), somente pelo Codex Cli (gpt-5 ou gpt-5 codex).
 
-This guide sets conventions for contributing to the k6 + TypeScript performance‑testing monorepo. Keep changes small, documented, and aligned with the structure and quality gates below.
+Purpose: quality gate for the k6 + TypeScript monorepo. Acts as the reviewer (Head of Non‑Functional Testing). Do not push unless explicitly requested. Validate every change against the PRD and Copilot instructions.
 
-## Project Structure & Module Organization
-- `docs/` — Source of truth for phases, use cases, SLOs, and templates.
-- `data/` — `fulldummyjsondata/` (read‑only reference), `test-data/` (curated inputs).
-- `.github/` — Automation and `.github/copilot-instructions.md` for agent guidance.
-- Phase 4+ (planned): `tests/` (API + scenarios), `libs/` (http, data, metrics), `configs/` (scenarios, envs).
-- Example test path: `tests/api/products/browse-catalog.test.ts`.
+## Project Structure & Inputs
+- Core docs: `docs/planejamento/PRD.md`, `.github/copilot-instructions.md`.
+- Use cases: `docs/casos_de_uso/UC00X-*.md` (Phase 4).
+- Data: `data/fulldummyjsondata/` (read‑only) → generate `data/test-data/`.
+- Code (planned/active): `tests/`, `libs/`, `configs/`.
 
-## Build, Test, and Development Commands
-- Prereqs: k6 v0.57+, Node 20.x, TypeScript 5.x.
-- Run single test: `k6 run tests/api/products/browse-catalog.test.ts`.
-- Adjust load: `K6_RPS=10 K6_DURATION=2m k6 run tests/api/products/browse-catalog.test.ts`.
-- Type check (Phase 4+): `npm run typecheck` (e.g., `tsc --noEmit`).
+## Review Workflow (No Push)
+- Reproduce locally: `k6 run tests/api/<feature>/<test>.test.ts`.
+- Parametrize: `K6_RPS=5 K6_DURATION=2m k6 run tests/...`.
+- Type check when available: `npm run typecheck`.
+- Provide focused patches or comments; request approval before commit/push.
 
-## Coding Style & Naming Conventions
-- Language: TypeScript. Indentation: 2 spaces; prefer ≤80 cols where reasonable.
-- Test files: `<action>-<resource>.test.ts` (e.g., `search-products.test.ts`).
-- k6 tags (required): `feature`, `kind`, `uc`.
+## Coding Style & Naming
+- TypeScript; indent 2 spaces; small diffs.
+- Tests: `<action>-<resource>.test.ts` (e.g., `browse-catalog.test.ts`).
+- Tags (mandatory): `feature`, `kind`, `uc`.
   - Example: `tags: { feature: 'products', kind: 'browse', uc: 'UC001' }`.
 - Metrics: snake_case `<feature>_<action>_<unit>` (e.g., `product_list_duration_ms`).
-- Pin remote module versions (e.g., `https://jslib.k6.io/.../1.4.0/index.js`).
+- Pin remote modules (e.g., `https://jslib.k6.io/k6-utils/1.4.0/index.js`).
 
-## Testing Guidelines
-- Prefer open‑model executors (e.g., `constant-arrival-rate`) for realistic RPS.
-- Use clear checks: `'status is 200'`, `'has products array'`.
-- Thresholds live in `options.thresholds`, e.g.:
+## Testing & Quality Gates
+- Executors: open‑model only (`constant-arrival-rate`, `ramping-arrival-rate`).
+- Thresholds by feature/use case:
   - `'http_req_duration{feature:products}': ['p(95)<300']`
-  - `'checks{uc:UC001}': ['rate>0.995']`
-- Test data: load from `data/test-data/`; do not read from `data/fulldummyjsondata/` in tests.
+  - `'checks{uc:UC00X}': ['rate>0.995']`
+- Checks human‑readable; think times per Personas (Phase 1).
+- Data source: only `data/test-data/`; never load from `fulldummyjsondata/` in tests.
 
-## Commit & Pull Request Guidelines
-- Conventional Commits: `type(scope): summary`.
-  - Examples: `docs(readme): update overview`, `docs(phase3): add templates`, `feat: initial setup`.
-- PRs must include:
-  - What/why, linked issues, and scope of impact.
-  - How to run locally (exact `k6` command and env vars).
-  - Expected thresholds/SLOs and a sample k6 summary.
-  - Update docs/configs if scenarios, tags, or SLOs change.
+## PR Review Checklist (Reviewer)
+- Links to UC doc and PRD section; rationale “what/why”.
+- Exact run command + envs; expected SLOs/thresholds; sample k6 summary.
+- Tagging correct; file naming matches patterns; metrics naming snake_case.
+- Open‑model executor used; data loaded from `test-data/`.
+- Conventional Commits style in commits; no push without request.
 
-## Security & Configuration Tips
-- DummyJSON writes are non‑persistent; prioritize read paths in tests.
-- Never commit secrets; prefer env vars (e.g., `K6_RPS`, `K6_DURATION`).
-- Always version‑pin remote modules; avoid unversioned URLs.
-
+## Security & Config
+- No secrets in repo; use env vars (e.g., `K6_RPS`, `K6_DURATION`).
+- Version‑pin remote modules; document any new thresholds/configs in `configs/`.
