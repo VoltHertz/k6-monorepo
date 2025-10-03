@@ -64,6 +64,21 @@
 
 **Objetivo**: Documentar todos os casos de uso priorizados
 
+**Entradas prioritárias (Fases 1–3) a usar como input em todos os UCs:**
+- Fase 1 — Base de requisitos e SLOs
+  - [Inventário de Endpoints](fase1-inventario-endpoints.csv): fonte primária para "🔗 Endpoints Envolvidos" (método, path, domínio)
+  - [Perfis de Usuário](fase1-perfis-de-usuario.md): define persona, distribuição de tráfego e orienta "📋 Descrição" e think times
+  - [Baseline de SLOs](fase1-baseline-slos.md): thresholds padrão por feature para "📊 SLOs" (P95, erro, checks)
+- Fase 2 — Ordem e dependências
+  - [Matriz de Priorização](fase2-matriz-priorizacao.md): determina sequência/sprint de escrita e foco por criticidade
+  - [Roadmap de Implementação](fase2-roadmap-implementacao.md): esforço estimado por UC; usar como referência de planejamento
+  - [Mapa de Dependências](fase2-mapa-dependencias.md): preencher "🔗 Dependências" e pré-requisitos (ex.: Auth → Carts)
+- Fase 3 — Padrões e qualidade (MANDATÓRIO)
+  - [Template de UC](templates/use-case-template.md): seguir todas as seções obrigatórias
+  - [Guia de Estilo](templates/guia-de-estilo.md): nomenclatura (UC00X, kebab-case), tags k6, métricas snake_case, formatação
+  - [Checklist de Qualidade](templates/checklist-qualidade.md): validar antes de marcar como ✅ Approved
+  - [Guia Visual](templates/README.visual.md): exemplos de formatação e estrutura
+
 **Sprint 1 - Fundação** (Semana 4):
 - [ ] UC001: Browse Products Catalog (4h)
 - [ ] UC004: View Product Details (3h)
