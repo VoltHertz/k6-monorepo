@@ -4,6 +4,64 @@
 
 This is an **enterprise-grade k6 performance testing monorepo** using TypeScript, designed for 10+ years of maintainability. We test DummyJSON API endpoints with automated quality gates, CI/CD integration, and comprehensive observability.
 
+## 🔄 Git Workflow & Best Practices (CRITICAL)
+
+### Commit Strategy
+- **ALWAYS commit after each logical change** (file creation, feature implementation, bug fix)
+- Use **Conventional Commits** format: `<type>(<scope>): <description>`
+  - `feat`: New feature (e.g., `feat(uc001): add browse products test`)
+  - `docs`: Documentation only (e.g., `docs(phase2): add prioritization matrix`)
+  - `refactor`: Code refactoring (e.g., `refactor(http): extract auth helper`)
+  - `test`: Adding tests (e.g., `test(products): add edge cases`)
+  - `chore`: Maintenance (e.g., `chore(deps): update k6 to v0.58`)
+  - `fix`: Bug fix (e.g., `fix(thresholds): correct P95 calculation`)
+
+### Push Strategy (IMPORTANT)
+- **DO NOT push automatically** after every commit
+- **ONLY push when explicitly requested** by the user or:
+  - End of work day/session
+  - Before major context switch
+  - When changes need to be shared/deployed
+  - User says "push", "atualizar repositório", "sincronizar", etc.
+- Rationale: Keeps local history clean, allows squashing/rebasing before sharing
+
+### README Updates
+- **Update README.md when:**
+  - Phase is completed (e.g., Phase 2 done → update progress table)
+  - New major features are added (libs, configs, workflows)
+  - Architecture changes (new ADRs, patterns)
+  - SLO targets are refined
+- **Commit README separately** with descriptive message: `docs(readme): update Phase X completion status`
+
+### Phase Completion Checklist
+After completing any phase:
+1. ✅ Update `docs/casos_de_uso/README.md` with deliverables
+2. ✅ Update `.github/copilot-instructions.md` Phase section (mark ✅ COMPLETA)
+3. ✅ Update root `README.md` progress table
+4. ✅ Commit changes: `docs(phaseX): mark as complete with deliverables`
+5. ⏸️ **WAIT for user to request push** (do not auto-push)
+
+### Branch Strategy
+- `main`: Production-ready code, always deployable
+- Feature branches: Create when implementing complex features (user will request)
+- No direct commits to main during pair programming (unless instructed)
+
+### Commit Message Examples
+```bash
+# Good ✅
+feat(uc001): implement browse products catalog test
+docs(phase2): add prioritization matrix and roadmap
+refactor(data): extract SharedArray loader utility
+test(auth): add token refresh edge cases
+chore(gitignore): exclude k6 cloud results
+
+# Bad ❌
+"update files"
+"fix stuff"
+"wip"
+"changes"
+```
+
 ## 🏗️ Architecture Principles
 
 ### ADR-001: TypeScript-First
@@ -130,6 +188,26 @@ import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
 3. **DON'T expect DummyJSON POST/PUT/DELETE to persist** → they return fake responses
 4. **DON'T forget `sleep(1)` between iterations** → prevents unrealistic hammering
 5. **DON'T use unversioned remote modules** → always pin versions in jslib.k6.io URLs
+6. **DON'T push to GitHub automatically** → only when explicitly requested by user
+
+## 📦 Repository Information
+
+### GitHub Repository
+- **URL**: https://github.com/VoltHertz/k6-monorepo
+- **Owner**: VoltHertz
+- **Visibility**: Public
+- **Branch**: main
+
+### Local Development
+- **Path**: `/home/Volt/k6-monorepo`
+- **Remote**: origin → https://github.com/VoltHertz/k6-monorepo.git
+
+### Repository Status
+- ✅ Git initialized
+- ✅ Remote configured
+- ✅ Initial commit pushed
+- ✅ README.md published
+- ✅ Phase 1 deliverables committed
 
 ## 🔧 Development Workflow
 
