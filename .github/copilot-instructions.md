@@ -405,7 +405,6 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
   - [Perfis de Usuário](../docs/casos_de_uso/fase1-perfis-de-usuario.md): define persona, distribuição de tráfego e orienta "📋 Descrição" e think times
   - [Baseline de SLOs](../docs/casos_de_uso/fase1-baseline-slos.md): thresholds padrão por feature para "📊 SLOs" (P95, erro, checks)
   - [Matriz de Priorização](../docs/casos_de_uso/fase2-matriz-priorizacao.md): determina sequência/sprint de escrita e foco por criticidade
-  - [Roadmap de Implementação](../docs/casos_de_uso/fase2-roadmap-implementacao.md): esforço estimado por UC; usar como referência de planejamento
   - [Mapa de Dependências](../docs/casos_de_uso/fase2-mapa-dependencias.md): preencher "🔗 Dependências" e pré-requisitos (ex.: Auth → Carts)
   - [Template de UC](../docs/casos_de_uso/templates/use-case-template.md): seguir todas as seções obrigatórias
   - [Guia de Estilo](../docs/casos_de_uso/templates/guia-de-estilo.md): nomenclatura (UC00X, kebab-case), tags k6, métricas snake_case, formatação
@@ -420,9 +419,10 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 - **Progresso**: 3/3 UCs (100% Sprint 1) ✅ COMPLETO
 
 **Sprint 2 (Semana 5) - Busca e Autenticação**:
-- UC002: Search & Filter Products (6h)
+- ✅ UC002: Search & Filter Products (6h) - COMPLETO
 - UC003: User Login & Profile (6h + `libs/http/auth.ts`)
 - **Meta**: 90% tráfego coberto, auth helper criado
+- **Progresso**: 1/2 UCs (50% Sprint 2)
 
 **Sprint 3 (Semana 6) - Carrinho**:
 - UC005: Cart Operations (Read) (6h + `libs/data/cart-loader.ts`)
@@ -600,7 +600,7 @@ Antes de considerar um UC completo, verificar:
 ### 📊 Métricas de Progresso
 
 - **Sprint 1**: 3/3 UCs fundação (23% do total - 3/13) ✅ COMPLETO
-- **Sprint 2**: +2 UCs busca/auth (38% do total - 5/13)
+- **Sprint 2**: 1/2 UCs busca/auth (31% do total - 4/13) 🚧 EM ANDAMENTO
 - **Sprint 3**: +1 UC carrinho (46% do total - 6/13)
 - **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
 - **Sprint 5**: +2 UCs backoffice (77% do total - 10/13)
