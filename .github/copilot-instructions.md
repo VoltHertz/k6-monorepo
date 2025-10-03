@@ -378,9 +378,9 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 **Sprint 1 (Semana 4) - Fundação**:
 - ✅ UC001: Browse Products Catalog (4h) - COMPLETO
 - ✅ UC004: View Product Details (3h) - COMPLETO
-- ⏸️ UC007: Browse by Category (4h) - PENDENTE
+- ✅ UC007: Browse by Category (4h) - COMPLETO
 - **Meta**: 3 UCs completos, 60% tráfego coberto, dados de teste identificados
-- **Progresso**: 2/3 UCs (67% Sprint 1)
+- **Progresso**: 3/3 UCs (100% Sprint 1) ✅ COMPLETO
 
 **Sprint 2 (Semana 5) - Busca e Autenticação**:
 - UC002: Search & Filter Products (6h)
@@ -562,7 +562,7 @@ Antes de considerar um UC completo, verificar:
 
 ### 📊 Métricas de Progresso
 
-- **Sprint 1**: 2/3 UCs fundação (15% do total - 2/13) ✅ Em Progresso
+- **Sprint 1**: 3/3 UCs fundação (23% do total - 3/13) ✅ COMPLETO
 - **Sprint 2**: +2 UCs busca/auth (38% do total - 5/13)
 - **Sprint 3**: +1 UC carrinho (46% do total - 6/13)
 - **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
