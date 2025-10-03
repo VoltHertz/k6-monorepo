@@ -302,32 +302,32 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 ---
 
-### Fase 2: Priorização e Roadmap (Semana 2)
+### Fase 2: Priorização e Roadmap ✅ COMPLETA
 
 **Objetivo**: Definir ordem de implementação baseada em criticidade e complexidade
 
 **Atividades**:
-1. **Matriz de Priorização**
+1. **Matriz de Priorização** ✅
    - Eixo X: Criticidade de negócio (core vs secundário)
    - Eixo Y: Complexidade técnica (simples vs complexo)
    - Classificar cada caso de uso identificado
 
-2. **Definição de Fases**
+2. **Definição de Fases** ✅
    - Fase 0: Casos fundamentais (smoke test viability)
    - Fase 1: Autenticação e controle de acesso
    - Fase 2: Operações CRUD principais
    - Fase 3: Jornadas compostas
    - Fase 4: Casos avançados (resiliência, consistência)
 
-3. **Dependências e Pré-requisitos**
+3. **Dependências e Pré-requisitos** ✅
    - Mapear quais UCs dependem de outros (ex: Cart precisa de Auth)
    - Identificar dados de teste necessários por UC
    - Planejar geração de massa de teste
 
 **Entregáveis**:
-- Matriz de priorização visual
-- Roadmap de implementação por sprint
-- Mapa de dependências entre UCs
+- ✅ [`fase2-matriz-priorizacao.md`](../docs/casos_de_uso/fase2-matriz-priorizacao.md) - 13 UCs em quadrantes, ordem de implementação
+- ✅ [`fase2-roadmap-implementacao.md`](../docs/casos_de_uso/fase2-roadmap-implementacao.md) - 6 sprints, 81h esforço total
+- ✅ [`fase2-mapa-dependencias.md`](../docs/casos_de_uso/fase2-mapa-dependencias.md) - Grafo de dependências (Tier 0/1/2)
 
 ---
 
