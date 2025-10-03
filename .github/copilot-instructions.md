@@ -364,25 +364,23 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 **Objetivo**: Documentar todos os casos de uso priorizados
 
 **Entradas prioritárias (Fases 1–3) a usar como input em todos os UCs:**
-- Fase 1 — Base de requisitos e SLOs
   - [Inventário de Endpoints](../docs/casos_de_uso/fase1-inventario-endpoints.csv): fonte primária para "🔗 Endpoints Envolvidos" (método, path, domínio)
   - [Perfis de Usuário](../docs/casos_de_uso/fase1-perfis-de-usuario.md): define persona, distribuição de tráfego e orienta "📋 Descrição" e think times
   - [Baseline de SLOs](../docs/casos_de_uso/fase1-baseline-slos.md): thresholds padrão por feature para "📊 SLOs" (P95, erro, checks)
-- Fase 2 — Ordem e dependências
   - [Matriz de Priorização](../docs/casos_de_uso/fase2-matriz-priorizacao.md): determina sequência/sprint de escrita e foco por criticidade
   - [Roadmap de Implementação](../docs/casos_de_uso/fase2-roadmap-implementacao.md): esforço estimado por UC; usar como referência de planejamento
   - [Mapa de Dependências](../docs/casos_de_uso/fase2-mapa-dependencias.md): preencher "🔗 Dependências" e pré-requisitos (ex.: Auth → Carts)
-- Fase 3 — Padrões e qualidade (MANDATÓRIO)
   - [Template de UC](../docs/casos_de_uso/templates/use-case-template.md): seguir todas as seções obrigatórias
   - [Guia de Estilo](../docs/casos_de_uso/templates/guia-de-estilo.md): nomenclatura (UC00X, kebab-case), tags k6, métricas snake_case, formatação
   - [Checklist de Qualidade](../docs/casos_de_uso/templates/checklist-qualidade.md): validar antes de marcar como ✅ Approved
   - [Guia Visual](../docs/casos_de_uso/templates/README.visual.md): exemplos de formatação e estrutura
 
 **Sprint 1 (Semana 4) - Fundação**:
-- UC001: Browse Products Catalog (4h)
-- UC004: View Product Details (3h)
-- UC007: Browse by Category (4h)
+- ✅ UC001: Browse Products Catalog (4h) - COMPLETO
+- ✅ UC004: View Product Details (3h) - COMPLETO
+- ⏸️ UC007: Browse by Category (4h) - PENDENTE
 - **Meta**: 3 UCs completos, 60% tráfego coberto, dados de teste identificados
+- **Progresso**: 2/3 UCs (67% Sprint 1)
 
 **Sprint 2 (Semana 5) - Busca e Autenticação**:
 - UC002: Search & Filter Products (6h)
@@ -564,7 +562,7 @@ Antes de considerar um UC completo, verificar:
 
 ### 📊 Métricas de Progresso
 
-- **Sprint 1**: 3 UCs fundação (23% do total - 3/13)
+- **Sprint 1**: 2/3 UCs fundação (15% do total - 2/13) ✅ Em Progresso
 - **Sprint 2**: +2 UCs busca/auth (38% do total - 5/13)
 - **Sprint 3**: +1 UC carrinho (46% do total - 6/13)
 - **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
