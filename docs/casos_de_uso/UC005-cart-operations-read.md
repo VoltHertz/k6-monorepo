@@ -1,7 +1,7 @@
 # UC005 - Cart Operations (Read)
 
 > **Status**: ✅ Approved  
-> **Prioridade**: P1 (Importante)  
+> **Prioridade**: P0 (Crítico)  
 > **Complexidade**: 2 (Simples)  
 > **Sprint**: Sprint 3 (Semana 6)  
 > **Esforço Estimado**: 6h  
@@ -50,11 +50,11 @@ Usuário autenticado (já realizou login via UC003) deseja visualizar o conteúd
 
 | Métrica | Threshold | Rationale |
 |---------|-----------|-----------|
-| `http_req_duration{feature:carts}` (P95) | < 500ms | Baseline Fase 1: GET /carts/user/{userId} P95 real = 270ms. Margem de 85% para variabilidade de carga |
-| `http_req_duration{feature:carts}` (P99) | < 700ms | Baseline Fase 1: P99 real = 350ms. Margem de 100% para casos extremos |
+| `http_req_duration{feature:carts}` (P95) | < 400ms | Baseline Fase 1: GET /carts/user/{userId} P95 real = 270ms. Margem de 48% conforme recomendação baseline |
+| `http_req_duration{feature:carts}` (P99) | < 600ms | Baseline Fase 1: P99 real = 350ms. Margem de 71% para casos extremos |
 | `http_req_failed{feature:carts}` | < 1% | Operação crítica pré-checkout, tolerância para userId inválido ou carrinho vazio |
 | `checks{uc:UC005}` | > 99% | Validações de estrutura de carrinho devem passar. Permite 1% falhas temporárias |
-| `cart_view_duration_ms` (P95) | < 500ms | Métrica customizada de latência específica da visualização de carrinho |
+| `cart_view_duration_ms` (P95) | < 400ms | Métrica customizada de latência específica da visualização de carrinho (alinhada com threshold geral) |
 | `cart_view_success` (count) | > 0 | Garantir que visualizações bem-sucedidas ocorrem durante o teste |
 | `cart_items_total` (avg) | > 0 | Média de itens por carrinho (indicador de engajamento) |
 
@@ -224,9 +224,9 @@ Headers:
 - ✅ `'totals are calculated'` → `total` = sum of product totals, `discountedTotal` < `total`
 - ✅ `'has user association'` → Response contains `userId`
 
-**Think Time**: 2-5s (verificação rápida de detalhes do produto no carrinho)
+**Think Time**: 3-7s (análise de detalhes do produto no carrinho)
 
-**Fonte Think Time**: `docs/casos_de_uso/fase1-perfis-de-usuario.md` - Persona 2 (Comprador): 2-5s navegação casual
+**Fonte Think Time**: `docs/casos_de_uso/fase1-perfis-de-usuario.md` - Persona 2 (Comprador): 3-7s entre ações
 
 ---
 
@@ -362,10 +362,10 @@ export const options = {
     },
   },
   thresholds: {
-    'http_req_duration{feature:carts}': ['p(95)<500', 'p(99)<700'],
+    'http_req_duration{feature:carts}': ['p(95)<400', 'p(99)<600'],
     'http_req_failed{feature:carts}': ['rate<0.01'],
     'checks{uc:UC005}': ['rate>0.99'],
-    'cart_view_duration_ms': ['p(95)<500'],
+    'cart_view_duration_ms': ['p(95)<400'],
     'cart_view_success': ['count>0'],
   },
 };
@@ -615,6 +615,7 @@ const res = http.get(
 | Data | Autor | Mudança |
 |------|-------|---------|
 | 2025-10-03 | GitHub Copilot | Criação inicial do UC005 (Sprint 3) |
+| 2025-10-06 | GitHub Copilot | Correções pós-análise de conformidade: (1) Badge prioridade P1→P0, (2) SLOs refinados (P95: 500→400ms, P99: 700→600ms) alinhados com baseline, (3) Think time Step 2 padronizado (2-5s→3-7s) para consistência com Persona 2 |
 
 ---
 
