@@ -430,9 +430,10 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 - **Progresso**: 1/1 UC (100% Sprint 3) ✅ COMPLETO
 
 **Sprint 4 (Semana 7) - Jornadas**:
-- UC009: User Journey (Unauthenticated) (8h + `libs/scenarios/journey-builder.ts`)
+- ✅ UC009: User Journey (Unauthenticated) (8h + `libs/scenarios/journey-builder.ts`) - COMPLETO
 - UC010: User Journey (Authenticated) (10h)
 - **Meta**: Fluxos end-to-end, think times realistas
+- **Progresso**: 1/2 UCs (50% Sprint 4) 🚧 EM ANDAMENTO
 
 **Sprint 5 (Semana 8) - Backoffice**:
 - UC008: List Users (Admin) (5h)
@@ -603,7 +604,7 @@ Antes de considerar um UC completo, verificar:
 - **Sprint 1**: 3/3 UCs fundação (23% do total - 3/13) ✅ COMPLETO
 - **Sprint 2**: 2/2 UCs busca/auth (38% do total - 5/13) ✅ COMPLETO
 - **Sprint 3**: 1/1 UC carrinho (46% do total - 6/13) ✅ COMPLETO
-- **Sprint 4**: +2 UCs jornadas (62% do total - 8/13)
+- **Sprint 4**: 1/2 UCs jornadas (54% do total - 7/13) 🚧 EM ANDAMENTO
 - **Sprint 5**: +2 UCs backoffice (77% do total - 10/13)
 - **Sprint 6**: +3 UCs avançados (100% do total - 13/13)
 
