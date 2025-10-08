@@ -444,9 +444,9 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 **Sprint 6 (Semana 9) - Avançados**:
 - ✅ UC006: Cart Operations (Write - Simulated) (6h) - COMPLETO
 - ✅ UC012: Token Refresh & Session Management (5h) - COMPLETO
-- UC011: Mixed Workload (Realistic Traffic) (12h + `libs/scenarios/workload-mixer.ts`)
+- ✅ UC011: Mixed Workload (Realistic Traffic) (12h + `libs/scenarios/workload-mixer.ts`) - COMPLETO
 - **Meta**: Stress/soak validados, 100% UCs completos
-- **Progresso**: 2/3 UCs (67% Sprint 6) 🚧 EM ANDAMENTO
+- **Progresso**: 3/3 UCs (100% Sprint 6) ✅ COMPLETO
 
 **Atividades por UC**:
 1. Descrever perfil de usuário e objetivo de negócio
@@ -567,7 +567,9 @@ Antes de considerar um UC completo, verificar:
 - **Sprint 3**: 1/1 UC carrinho (46% do total - 6/13) ✅ COMPLETO
 - **Sprint 4**: 2/2 UCs jornadas (62% do total - 8/13) ✅ COMPLETO
 - **Sprint 5**: 2/2 UCs backoffice (77% do total - 10/13) ✅ COMPLETO
-- **Sprint 6**: 2/3 UCs avançados (92% do total - 12/13) 🚧 EM ANDAMENTO
+- **Sprint 6**: 3/3 UCs avançados (100% do total - 13/13) ✅ COMPLETO
+
+**🎉 FASE 4 COMPLETA - 13/13 UCs (100%)**
 
 ---
 
