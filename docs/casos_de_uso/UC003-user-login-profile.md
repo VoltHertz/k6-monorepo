@@ -196,9 +196,9 @@ Body:
 - ✅ `'has user data'` → Response contains `id`, `username`, `email`, `firstName`, `lastName`
 - ✅ `'token is valid JWT'` → `accessToken` matches JWT format (3 partes separadas por ponto)
 
-**Think Time**: 1s (transição automática para verificação de perfil)
+**Think Time**: 3-7s (transição pós-login conforme Persona 2)
 
-**Fonte Think Time**: `docs/casos_de_uso/fase1-perfis-de-usuario.md` - Fluxo 2 (Comprador): 5s entre steps
+**Fonte Think Time**: `docs/casos_de_uso/fase1-perfis-de-usuario.md` - Fluxo 2 (Comprador): 3-7s entre ações
 
 ---
 

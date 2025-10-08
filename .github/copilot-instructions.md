@@ -573,6 +573,54 @@ Antes de considerar um UC completo, verificar:
 
 ---
 
+### Fase 5: Handoff para Implementação (Semana 10) ✅ COMPLETA
+
+**Objetivo**: Preparar documentação para time de implementação dos testes não funcionais.
+
+**Atividades**:
+1. **Organização Final** ✅
+   - Criar índice consolidado de todos os 13 UCs
+   - Linkar UCs com endpoints da API docs
+   - Mapear dependências e libs criadas
+
+2. **Matriz de Testes Não Funcionais** ✅
+   - Definir quais UCs rodarão em smoke/baseline/stress/soak
+   - Organizar por domínio da API (products, auth, carts, users, posts)
+   - Especificar RPS, duração e thresholds por tipo de teste
+
+3. **Scripts de Execução** ✅
+   - Criar smoke.sh (30-60s, 1-2 RPS, validação rápida)
+   - Criar baseline.sh (5-10min, 5-10 RPS, SLO validation)
+   - Criar stress.sh (10-15min, 20-50 RPS ramping, load validation)
+   - Criar soak.sh (60-120min, 10 RPS sustained, stability validation)
+
+4. **Guia de Implementação** ✅
+   - Estrutura do projeto (~20 TypeScript files: 11 tests + 9 libs)
+   - Instruções passo a passo para desenvolvedores
+   - Exemplos de código completos (auth.ts, browse-catalog.test.ts, journey-builder.ts)
+   - Troubleshooting e validação
+
+**Entregáveis**:
+- ✅ `docs/casos_de_uso/README.md` - Índice consolidado (13 UCs, 24 endpoints, 3 libs, 15 data files)
+- ✅ `docs/casos_de_uso/fase5-matriz-testes-nao-funcionais.md` - Matriz completa (smoke 8 UCs, baseline 11 UCs, stress 6 UCs, soak 4 UCs)
+- ✅ `scripts/smoke.sh` - Smoke tests execution script
+- ✅ `scripts/baseline.sh` - Baseline tests execution script
+- ✅ `scripts/stress.sh` - Stress tests execution script
+- ✅ `scripts/soak.sh` - Soak tests execution script
+- ✅ `docs/casos_de_uso/fase5-guia-implementacao.md` - Guia completo de implementação (~500 linhas)
+
+**Métricas de Cobertura**:
+- 13/13 UCs documentados (100%)
+- 24/38 endpoints DummyJSON (63% da API)
+- 100% tráfego esperado (60% visitante + 30% comprador + 10% admin)
+- 3 libs criadas (auth.ts, journey-builder.ts, workload-mixer.ts)
+- 15 data files identificados
+- 4 scripts de execução (smoke, baseline, stress, soak)
+
+**🎉 FASE 5 COMPLETA - Handoff para Implementação Pronto**
+
+---
+
 ## 📚 Key References
 
 - [k6 TypeScript Support](https://grafana.com/docs/k6/latest/using-k6/javascript-typescript-compatibility-mode/)

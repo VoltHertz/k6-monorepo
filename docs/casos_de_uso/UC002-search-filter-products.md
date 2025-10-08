@@ -46,9 +46,9 @@ Usuário anônimo acessa o e-commerce com uma necessidade ou interesse específi
 
 | Métrica | Threshold | Rationale |
 |---------|-----------|-----------|
-| `http_req_duration{feature:search}` (P95) | < 600ms | Baseline Fase 1: P95 real = 350ms para queries simples, 480ms para complexas. Margem de 25% para variação de carga e complexidade de termos |
-| `http_req_duration{feature:search}` (P99) | < 800ms | Threshold conservador para queries muito complexas ou condições de rede degradadas |
-| `http_req_failed{feature:search}` | < 1% | Operação de descoberta crítica, mas tolerância ligeiramente maior que browse (queries podem retornar 0 resultados sem ser erro) |
+| `http_req_duration{feature:products}` (P95) | < 600ms | Baseline Fase 1: P95 real = 350ms (simples), 480ms (complexas). Margem para variabilidade |
+| `http_req_duration{feature:products}` (P99) | < 800ms | Threshold conservador para queries muito complexas ou rede degradada |
+| `http_req_failed{feature:products}` | < 1% | Descoberta crítica; tolerância maior que browse (0 resultados não é erro) |
 | `checks{uc:UC002}` | > 99% | Validações devem passar, permite 1% de falhas temporárias (ex: termos não encontrados) |
 | `product_search_duration_ms` (P95) | < 600ms | Métrica customizada de latência específica da operação de busca |
 | `product_search_results_count` (avg) | > 0 | Garantir que buscas retornam resultados (média maior que zero) |
@@ -166,7 +166,7 @@ Headers:
 - ✅ `'limit is ten'` → `limit` = 10
 - ✅ `'has more results if applicable'` → Se `total > 10`: há mais resultados disponíveis
 
-**Think Time**: `3-7s` (usuário decide se visualiza mais páginas)
+**Think Time**: `2-5s` (usuário decide se visualiza mais páginas)
 
 ---
 
@@ -331,12 +331,12 @@ export const options = {
       duration: __ENV.K6_DURATION || '5m',
       preAllocatedVUs: 10,
       maxVUs: 50,
-      tags: { feature: 'search', kind: 'query', uc: 'UC002' },
+      tags: { feature: 'products', kind: 'search', uc: 'UC002' },
     },
   },
   thresholds: {
-    'http_req_duration{feature:search}': ['p(95)<600', 'p(99)<800'],
-    'http_req_failed{feature:search}': ['rate<0.01'],
+    'http_req_duration{feature:products}': ['p(95)<600', 'p(99)<800'],
+    'http_req_failed{feature:products}': ['rate<0.01'],
     'checks{uc:UC002}': ['rate>0.99'],
     'product_search_duration_ms': ['p(95)<600'],
     'product_search_results_count': ['avg>0'],
@@ -358,7 +358,7 @@ export default function() {
   const searchUrl = `${BASE_URL}/products/search?q=${encodeURIComponent(searchTerm)}`;
   const res = http.get(searchUrl, {
     headers: { 'Content-Type': 'application/json' },
-    tags: { name: 'search_products', step: 'simple_search', uc: 'UC002' }
+    tags: { name: 'search_products', feature: 'products', kind: 'search', uc: 'UC002', step: 'simple_search' }
   });
   
   productSearchDuration.add(res.timings.duration);
@@ -411,8 +411,8 @@ export default function() {
 ### Tags Obrigatórias
 ```javascript
 tags: { 
-  feature: 'search',     // Domain: search operations
-  kind: 'query',         // Operation: query/filter
+  feature: 'products',   // Domain: products API
+  kind: 'search',        // Operation: search/filter
   uc: 'UC002'            // Use case ID
 }
 ```
@@ -442,7 +442,7 @@ BASE_URL=https://dummyjson.com K6_RPS=10 K6_DURATION=3m k6 run tests/api/product
 K6_RPS=5 K6_DURATION=2m k6 run tests/api/products/search-products.test.ts
 
 # Saída esperada:
-# ✓ http_req_duration{feature:search}...: avg=XXXms min=XXms med=XXms max=XXms p(95)=XXXms p(99)=XXXms
+# ✓ http_req_duration{feature:products}...: avg=XXXms min=XXms med=XXms max=XXms p(95)=XXXms p(99)=XXXms
 # ✓ checks{uc:UC002}.....................: 99.x%
 ```
 
@@ -652,7 +652,7 @@ productSearchEmptyResults.add(total === 0 ? 1 : 0);
 - [x] Arquivo nomeado corretamente: `UC002-search-filter-products.md` ✅
 - [x] Libs/helpers criados estão documentados (Nenhuma - não aplicável)
 - [x] Comandos de teste estão corretos e testados (smoke, baseline, stress)
-- [x] Tags obrigatórias estão especificadas (feature: search, kind: query, uc: UC002)
+- [x] Tags obrigatórias estão especificadas (feature: products, kind: search, uc: UC002)
 - [x] Métricas customizadas estão documentadas (Trends, Counters, Rates)
 
 ---
