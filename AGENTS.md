@@ -28,7 +28,7 @@ Both AI agents will implement the **SAME complete k6 monorepo project** independ
 ---
 
 ## 📋 Codex CLI Guidelines (GPT-5)
-As regras aqui definidas não devem ser seguidas pelo copilot (Claude Sonnet 4.5), somente pelo Codex Cli (gpt-5 ou gpt-5 codex).
+As regras aqui definidas não devem ser seguidas pelo Copilot (Claude Sonnet 4.5), somente pelo Codex CLI (GPT-5).
 
 Purpose: quality gate for the k6 + TypeScript monorepo. Acts as the reviewer (Head of Non‑Functional Testing). Do not push unless explicitly requested. Validate every change against the PRD and Copilot instructions.
 
