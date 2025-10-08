@@ -436,9 +436,10 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 - **Progresso**: 2/2 UCs (100% Sprint 4) ✅ COMPLETO
 
 **Sprint 5 (Semana 8) - Backoffice**:
-- UC008: List Users (Admin) (5h)
+- ✅ UC008: List Users (Admin) (5h) - COMPLETO
 - UC013: Content Moderation (Posts/Comments) (4h)
 - **Meta**: Admin operations, moderação completa
+- **Progresso**: 1/2 UCs (50% Sprint 5) 🚧 EM ANDAMENTO
 
 **Sprint 6 (Semana 9) - Avançados**:
 - UC006: Cart Operations (Write - Simulated) (6h)
@@ -605,7 +606,7 @@ Antes de considerar um UC completo, verificar:
 - **Sprint 2**: 2/2 UCs busca/auth (38% do total - 5/13) ✅ COMPLETO
 - **Sprint 3**: 1/1 UC carrinho (46% do total - 6/13) ✅ COMPLETO
 - **Sprint 4**: 2/2 UCs jornadas (62% do total - 8/13) ✅ COMPLETO
-- **Sprint 5**: +2 UCs backoffice (77% do total - 10/13)
+- **Sprint 5**: 1/2 UCs backoffice (69% do total - 9/13) 🚧 EM ANDAMENTO
 - **Sprint 6**: +3 UCs avançados (100% do total - 13/13)
 
 ---
