@@ -437,9 +437,9 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 **Sprint 5 (Semana 8) - Backoffice**:
 - ✅ UC008: List Users (Admin) (5h) - COMPLETO
-- UC013: Content Moderation (Posts/Comments) (4h)
+- ✅ UC013: Content Moderation (Posts/Comments) (4h) - COMPLETO
 - **Meta**: Admin operations, moderação completa
-- **Progresso**: 1/2 UCs (50% Sprint 5) 🚧 EM ANDAMENTO
+- **Progresso**: 2/2 UCs (100% Sprint 5) ✅ COMPLETO
 
 **Sprint 6 (Semana 9) - Avançados**:
 - UC006: Cart Operations (Write - Simulated) (6h)
@@ -468,62 +468,21 @@ Every test MUST have a corresponding use case doc in `docs/casos_de_uso/UC00X-<n
 
 ---
 
-### Fase 5: Validação e Refinamento (Semana 10)
 
-**Objetivo**: Revisar e ajustar casos de uso antes da implementação
-
-**Atividades**:
-1. **Revisão por Pares**
-   - Revisar cada UC com outro membro do time
-   - Validar clareza e completude
-   - Verificar aderência ao template
-
-2. **Validação com Stakeholders**
-   - Apresentar UCs para product owners
-   - Confirmar que perfis de usuário estão corretos
-   - Ajustar SLOs baseado em expectativas de negócio
-
-3. **Testes de Viabilidade**
-   - Executar requests manuais para cada UC
-   - Confirmar que endpoints existem e funcionam
-   - Documentar particularidades descobertas
-
-4. **Refinamento Final**
-   - Ajustar SLOs baseado em testes manuais
-   - Adicionar observações importantes
-   - Atualizar dependências descobertas
-
-**Entregáveis**:
-- Todos os 13 UCs revisados e aprovados
-- Ata de validação com stakeholders
-- Notas de viabilidade técnica
-
----
-
-### Fase 6: Handoff para Implementação (Semana 11)
+### Fase 5: Handoff para Implementação (Semana 11)
 
 **Objetivo**: Preparar documentação para time de implementação
 
 **Atividades**:
 1. **Organização Final**
-   - Numerar UCs em ordem de implementação
-   - Criar índice em `docs/casos_de_uso/README.md`
    - Linkar UCs com endpoints da API docs
 
-2. **Geração de Massa de Teste**
-   - Criar geradores em `data/test-data/generators/`
-   - Extrair amostras de `data/fulldummyjsondata/`
-   - Versionar dados no Git
-
-3. **Documentação de Suporte**
-   - Criar guia de implementação
-   - Documentar padrões de código esperados
-   - Preparar exemplos de testes
+2. **Testes não funcionais por API**
+   - Planejar como será a execução de cada um dos testes não funcionais (smoke, baseline, stress, soak)
+   - Definir quais UCs rodarão em cada tipo de teste
 
 **Entregáveis**:
-- README navegável de casos de uso
-- Massa de teste gerada e versionada
-- Guia de implementação para devs
+- Planejamento dos scripts de teste não funcionais por API, apontando quais UCs serão usados em cada teste não funcional.
 
 ---
 
@@ -606,8 +565,8 @@ Antes de considerar um UC completo, verificar:
 - **Sprint 2**: 2/2 UCs busca/auth (38% do total - 5/13) ✅ COMPLETO
 - **Sprint 3**: 1/1 UC carrinho (46% do total - 6/13) ✅ COMPLETO
 - **Sprint 4**: 2/2 UCs jornadas (62% do total - 8/13) ✅ COMPLETO
-- **Sprint 5**: 1/2 UCs backoffice (69% do total - 9/13) 🚧 EM ANDAMENTO
-- **Sprint 6**: +3 UCs avançados (100% do total - 13/13)
+- **Sprint 5**: 2/2 UCs backoffice (77% do total - 10/13) ✅ COMPLETO
+- **Sprint 6**: 3 UCs avançados (100% do total - 13/13)
 
 ---
 
