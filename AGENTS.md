@@ -1,5 +1,34 @@
-# Repository Guidelines
-As regras aqui definidas não devem ser seguidas pelo copilot (Claude Sonnet 4.5), somente pelo Codex Cli (gpt-5 ou gpt-5 codex).
+# Repository Guidelines - Dual AI Workflow
+
+## 🤖 AI Agents Strategy
+
+### **Parallel Implementation Race** 🏁
+Both AI agents will implement the **SAME complete k6 monorepo project** independently:
+
+- **Codex CLI (GPT-5)** - Branch: `feature/codex-implementation`
+  - **Guidelines**: THIS file (`AGENTS.md`)
+  
+- **GitHub Copilot (Claude Sonnet 4.5)** - Branch: `feature/copilot-implementation`
+  - **Guidelines**: `.github/copilot-instructions.md`
+
+### **Competition Rules**
+- ✅ **SAME scope**: Implement all 13 UCs (UC001-UC013) + 3 libs + 15 data files
+- ✅ **SAME quality bar**: Follow Phase 3 templates, ADRs, SLOs
+- ✅ **SEPARATE branches**: No cross-pollination during development
+- ✅ **FINAL evaluation**: User compares quality/completeness and chooses winner (or merges best parts)
+
+### **Success Criteria**
+- Code quality (TypeScript, k6 best practices)
+- Test coverage (13/13 UCs implemented)
+- SLO compliance (thresholds validated)
+- Documentation quality (comments, README updates)
+- Runnable tests (k6 run tests/...)
+- CI/CD readiness (smoke/baseline/stress/soak)
+
+---
+
+## 📋 Codex CLI Guidelines (GPT-5)
+As regras aqui definidas não devem ser seguidas pelo Copilot (Claude Sonnet 4.5), somente pelo Codex CLI (GPT-5).
 
 Purpose: quality gate for the k6 + TypeScript monorepo. Acts as the reviewer (Head of Non‑Functional Testing). Do not push unless explicitly requested. Validate every change against the PRD and Copilot instructions.
 
