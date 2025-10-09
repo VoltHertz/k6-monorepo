@@ -121,27 +121,39 @@ Princípios
 - Traçabilidade direta para testes k6 (tags, thresholds, comando de execução).
 - Dados somente via `data/test-data/` (formatos pequenos e curados).
 
-Fases
-- Fase 1 — Inventário e Diagnóstico
-  - Listar UCs existentes (UC001–UC013), mapear endpoints por UC, identificar divergências com `docs/dummyJson`.
-  - Classificar cada UC: manter | revisar | descartar (quando fugir do escopo DummyJSON).
-  - Entregáveis: tabela de status em `docs/casos_de_uso/README.md`; lista de ajustes por UC.
-- Fase 2 — Poda e Normalização
-  - Aplicar template mínimo (ver abaixo); remover seções redundantes/opinativas que não impactam execução.
-  - Padronizar nomenclatura (tags: `feature`, `kind`, `uc`; métricas snake_case).
-  - Entregáveis: UCs enxutos, com preâmbulo “Revisado por Codex (data)”.
-- Fase 3 — Dados e Traçabilidade
-  - Para cada UC, definir a massa necessária em `data/test-data/` (arquivos, colunas, cardinalidade, amostragem do `fulldummyjsondata`).
-  - Proibir leitura direta de `fulldummyjsondata` nos testes; documentar geradores quando necessário.
-  - Entregáveis: bloco “Dados de Teste” por UC com arquivos e volumes-alvo.
-- Fase 4 — Executabilidade e SLOs
-  - Fixar executor open‑model, thresholds por feature/UC, tags obrigatórias e comando k6 de execução.
-  - Incluir “Como rodar” com `K6_RPS`/`K6_DURATION` de referência e baseURL.
-  - Entregáveis: bloco “Execução” por UC pronto para copy‑paste no teste.
-- Fase 5 — Consistência e Assinatura
-  - Checagens cruzadas (naming, links, endpoints válidos, dados referenciados existem, thresholds plausíveis).
-  - Atualizar índice geral, registrar versão/data e responsável.
-  - Entregáveis: `docs/casos_de_uso/README.md` com matriz final (UC ↔ endpoints ↔ testes ↔ dados).
+Fases (atualizado)
+- Fase 1 — Inventário e Diagnóstico — Concluída
+  - Realizado: mapeamento de endpoints, classificação (Manter/Revisar) e ações por UC.
+  - Entregáveis concluídos:
+    - docs/casos_de_uso/README.md — seção “Fase 1 — Inventário e Diagnóstico (Codex)” com tabela de status
+    - docs/casos_de_uso/fase1-inventario-ajustes.md — ajustes detalhados por UC
+  - Novos itens descobertos para o backlog:
+    - Renomear UC008 para “List Users” (remover semântica de admin/RBAC)
+    - Renomear UC013 para “Posts & Comments (Read‑only)” (sem moderação/escrita)
+    - UC006: reforçar writes simulados e eliminar validações de persistência
+    - UC011: limitar mix inicial (definir percentuais e reduzir métricas redundantes)
+    - UC007: unificar narrativa de `categories` vs `category-list`
+    - Garantir docs ≤ 2 páginas, com “Como rodar” e thresholds/tags padronizados
+
+- Fase 2 — Poda e Normalização — Em planejamento
+  - Aplicar o template mínimo aos UCs marcados “Revisar” na ordem: UC006 → UC008 → UC013 → UC009 → UC011
+  - Ações por UC: títulos atualizados, seções enxutas, endpoints validados, remoção de conteúdo não executável
+  - Aceite por UC: arquivo revisado com preâmbulo “Revisado por Codex (data)” e checklist atendido
+  - Commits: 1 por UC (`docs(ucXXX): revisar…`); Push: ao terminar 2–3 UCs
+
+- Fase 3 — Dados e Traçabilidade — Planejada
+  - Criar/ajustar `data/test-data/*` conforme cada UC revisado (IDs, queries, slugs, credenciais)
+  - Adicionar geradores leves quando necessário; validar tamanho e determinismo
+  - Aceite: todos os arquivos referenciados existem; leitura via `SharedArray` documentada
+
+- Fase 4 — Executabilidade e SLOs — Planejada
+  - Consolidar thresholds por feature/UC e comandos `k6 run` de referência (smoke/baseline)
+  - Garantir uso de executores open‑model e tags obrigatórias
+  - Aceite: bloco “Execução” pronto para copy‑paste em cada UC
+
+- Fase 5 — Consistência e Assinatura — Planejada
+  - Passar checklist global (naming, links, dados, thresholds), atualizar índice/matriz final
+  - Aceite: README consolidado e versão/data de revisão publicadas
 
 Template mínimo por UC
 - Título/ID e breve descrição (alinhada à DummyJSON).
