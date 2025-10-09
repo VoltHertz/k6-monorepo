@@ -3,8 +3,8 @@
 
 **Versão:** 1.0  
 **Data:** 03 de Outubro de 2025  
-**Owner:** Head de Testes Não Funcionais  
-**Status:** 🟢 Aprovado para Implementação
+**Owner:** Codex CLI (GPT‑5) — Agente de IA (branch `feature/codex-implementation`)  
+**Status:** 🟡 Em implementação nesta branch
 
 ---
 
@@ -24,11 +24,24 @@ Este documento define os requisitos, arquitetura, governança e roadmap para a c
 
 | Métrica | Baseline Atual | Meta Q1 2026 | Meta Q4 2026 |
 |---------|---------------|--------------|--------------|
-| Cobertura de Endpoints | 0% | 60% | 95% |
+| Cobertura de UCs (UC001–UC013) | 0% | 70% | 100% |
 | Tempo de Execução (Smoke) | N/A | < 2 min | < 1 min |
 | Taxa de Falsos Positivos | N/A | < 5% | < 1% |
 | Reutilização de Código | N/A | 40% | 70% |
 | Time to Market (novo teste) | N/A | 4h | 1h |
+
+---
+
+## 🤖 Execução por Agentes de IA (Branch Codex)
+
+- Implementador: Codex CLI (GPT‑5), atuando de forma autônoma nesta branch.
+- Concorrência: GitHub Copilot (Claude Sonnet 4.5) implementa em `feature/copilot-implementation`. Sem colaboração cruzada; comparação final por maturidade, estabilidade e aderência ao PRD/UCs.
+- Escopo mínimo desta branch:
+  - 13/13 UCs implementadas (UC001–UC013) com testes k6 executáveis.
+  - 3 libs reutilizáveis: `libs/observability`, `libs/data`, `libs/http`.
+  - 15+ arquivos em `data/test-data/` (curados, determinísticos quando possível).
+- Política de trabalho: “patch‑first”, diffs pequenos, commits/push somente com aprovação.
+- Restrições e ética: uso moderado do DummyJSON (open model, RPS baixo em CI); módulos remotos versionados; sem segredos no repo.
 
 ---
 
@@ -244,6 +257,8 @@ Cada caso de uso em `/docs/casos_de_uso` deve seguir o template:
 ```
 
 ### Casos de Uso Prioritários
+
+Nota (branch Codex): a meta é cobrir UC001–UC013. A tabela abaixo representa uma ordem de arranque; os demais UCs seguem os templates e requisitos em `docs/casos_de_uso`.
 
 | ID | Nome | Prioridade | Endpoints | Complexidade |
 |----|------|------------|-----------|--------------|
@@ -918,6 +933,22 @@ assignees: ''
 
 ---
 
+## 🎯 Critérios de Aceite — Branch Codex
+
+Este PRD, para a branch `feature/codex-implementation`, considera concluída a implementação quando:
+
+- [ ] 13/13 UCs implementadas e executáveis: UC001–UC013 em `docs/casos_de_uso/*` refletidos em `tests/api/**`.
+- [ ] 3 libs reutilizáveis publicadas e usadas pelos testes:
+  - `libs/observability` (tags, métricas, thresholds/summary helpers)
+  - `libs/data` (loader/generators para `data/test-data/`)
+  - `libs/http` (base URL, headers, retry/backoff simples)
+- [ ] 15+ arquivos em `data/test-data/` versionados, validados, sem PII.
+- [ ] Executores open‑model apenas; thresholds por feature/UC ativos e quebrando o build em violação.
+- [ ] Execução local documentada (ex.: `K6_RPS=5 K6_DURATION=2m k6 run tests/api/...`).
+- [ ] README e ADRs atualizados para decisões chave (dados, thresholds, retries).
+
+Os critérios abaixo (genéricos do PRD) continuam válidos como apoio.
+
 ## 🎯 Critérios de Aceite do PRD
 
 ### Must-Have (Fase 1)
@@ -980,22 +1011,20 @@ assignees: ''
 
 ---
 
-## 🚦 Próximos Passos
+## 🚦 Próximos Passos (Branch Codex)
 
-1. **Aprovação do PRD**: Revisar com stakeholders e obter sign-off
-2. **Kickoff Fase 0**: Iniciar bootstrapping do repositório
-3. **Definir Squad**: Alocar 2 engenheiros de performance para execução
-4. **Setup Ferramentas**: Configurar acessos, repositório, CI/CD
-5. **Sprint Planning**: Quebrar Fase 1 em tasks granulares
+1. Consolidar backlog UC001–UC013 a partir de `docs/casos_de_uso/*`.
+2. Criar esqueleto das libs `observability`, `data`, `http` e integrá-las no primeiro teste.
+3. Preparar `data/test-data/` (15+ arquivos curados) e validar carregamento via `SharedArray`.
+4. Subir primeiros cenários (products: browse/search) com thresholds e tags padrão.
+5. Habilitar workflows de smoke e baseline; publicar `summary.json` como artefato.
+6. Iterar por UCs restantes com diffs pequenos + documentação incremental.
 
 ---
 
-**Aprovações Necessárias**:
+**Aprovações Necessárias (Branch Codex)**:
 
-- [Y] Head de Engenharia
-- [Y] Tech Lead de Performance
-- [Y] Product Owner
-- [Y] DevOps Lead
+- [Y] Aprovação do usuário para commits/pushes e abertura de PR
 
 ---
 
