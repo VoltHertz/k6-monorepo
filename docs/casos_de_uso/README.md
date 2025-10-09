@@ -1,5 +1,27 @@
 # Casos de Uso - k6 Performance Testing Monorepo
 
+## Fase 1 — Inventário e Diagnóstico (Codex)
+
+Objetivo: alinhar cada UC à API DummyJSON, reduzir verbosidade e garantir executabilidade imediata. Referências de consulta: `docs/dummyJson/*` e `data/fulldummyjsondata/*` (apenas para orientar massa de teste curada em `data/test-data/`).
+
+| UC | Nome (atual) | Endpoints principais | Status | Ações propostas |
+|----|--------------|----------------------|--------|-----------------|
+| UC001 | Browse Products Catalog | GET /products | Manter | Enxugar doc; manter thresholds e tags padrão. |
+| UC002 | Search & Filter Products | GET /products/search | Manter | Enxugar doc; focar em `q`, `limit`, `skip`, `select`, `sortBy/order`. |
+| UC003 | User Login & Profile | POST /auth/login; GET /auth/me | Manter | Clarificar uso de cookies vs Bearer; exemplos mínimos. |
+| UC004 | View Product Details | GET /products/{id} | Manter | Enxugar doc; checks objetivos (`status`, `shape`). |
+| UC005 | Cart Operations (Read) | GET /carts; /carts/{id}; /carts/user/{userId} | Manter | Reforçar paginação/IDs válidos; dados via `users-with-carts.json`. |
+| UC006 | Cart Operations (Write - Simulated) | POST /carts/add; PUT/DELETE /carts/{id} | Revisar | Destacar não persistência; evitar GET subsequente por id “criado”; thresholds moderados. |
+| UC007 | Browse by Category | GET /products/categories; /products/category-list; /products/category/{slug} | Manter | Consolidar categorias vs category-list; enxugar. |
+| UC008 | List Users (Admin) | GET /users; /users/{id}; /users/search; /users/filter | Revisar | Remover semântica de “admin” (DummyJSON não aplica RBAC); renomear para “List Users”; ajustar thresholds. |
+| UC009 | User Journey (Unauthenticated) | Produtos (lista, categorias, busca, detalhe) | Revisar | Tornar composição explícita de UC001/2/4/7; reutilizar thresholds; reduzir narrativa. |
+| UC010 | User Journey (Authenticated) | Auth (login, me) + carts/user | Manter | Reutilizar libs/auth; clarificar dependências de dados. |
+| UC011 | Mixed Workload (Realistic Traffic) | Múltiplos (products, users, carts, posts/comments) | Revisar | Limitar escopo inicial; definir mix e RPS modestos; remover métricas redundantes. |
+| UC012 | Token Refresh & Session | POST /auth/refresh; GET /auth/me | Manter | Deixar claro fluxo refresh → me; cookies vs header. |
+| UC013 | Content Moderation (Posts/Comments) | GET /posts; /posts/{id}; /posts/user/{id}; /comments; /comments/{id}; /comments/post/{id} | Revisar | Renomear para “Posts & Comments (Read‑only)”; reafirmar que writes são fake; reduzir doc. |
+
+Detalhes e ações por UC: ver `docs/casos_de_uso/fase1-inventario-ajustes.md`.
+
 ## 📋 Índice Consolidado - 13 Casos de Uso (100% Completos)
 
 Este diretório contém **toda a documentação** dos casos de uso de performance testing para a API DummyJSON, organizados em 6 sprints e 3 tiers de complexidade.
