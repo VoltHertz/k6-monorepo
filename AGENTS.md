@@ -105,3 +105,63 @@ Planned libs (owned by Codex):
 - Codex is accountable for completeness, quality, and clarity on this branch.
 - Outperform Copilot branch by stricter tagging, better thresholds rationale, reusable libs, and cleaner docs.
 - Prefer correctness and maintainability over premature optimization; avoid flakiness.
+
+## Use Case Docs Review Project (docs/casos_de_uso)
+
+Objetivo
+- Revisar e enxugar os UCs para refletirem fielmente a API DummyJSON, com foco em testabilidade imediata e reuso no monorepo. Manter apenas o que agrega execução e medição.
+
+Referências (somente consulta)
+- `docs/dummyJson/*` — documentação oficial dos endpoints a serem testados.
+- `data/fulldummyjsondata/*` — espelho de dados da API para orientar a curadoria da massa de teste (não será acessado diretamente pelos testes).
+
+Princípios
+- Alinhamento estrito à DummyJSON (sem suposições ou funcionalidades inexistentes).
+- Documentação mínima viável para implementação (1–2 páginas por UC).
+- Traçabilidade direta para testes k6 (tags, thresholds, comando de execução).
+- Dados somente via `data/test-data/` (formatos pequenos e curados).
+
+Fases
+- Fase 1 — Inventário e Diagnóstico
+  - Listar UCs existentes (UC001–UC013), mapear endpoints por UC, identificar divergências com `docs/dummyJson`.
+  - Classificar cada UC: manter | revisar | descartar (quando fugir do escopo DummyJSON).
+  - Entregáveis: tabela de status em `docs/casos_de_uso/README.md`; lista de ajustes por UC.
+- Fase 2 — Poda e Normalização
+  - Aplicar template mínimo (ver abaixo); remover seções redundantes/opinativas que não impactam execução.
+  - Padronizar nomenclatura (tags: `feature`, `kind`, `uc`; métricas snake_case).
+  - Entregáveis: UCs enxutos, com preâmbulo “Revisado por Codex (data)”.
+- Fase 3 — Dados e Traçabilidade
+  - Para cada UC, definir a massa necessária em `data/test-data/` (arquivos, colunas, cardinalidade, amostragem do `fulldummyjsondata`).
+  - Proibir leitura direta de `fulldummyjsondata` nos testes; documentar geradores quando necessário.
+  - Entregáveis: bloco “Dados de Teste” por UC com arquivos e volumes-alvo.
+- Fase 4 — Executabilidade e SLOs
+  - Fixar executor open‑model, thresholds por feature/UC, tags obrigatórias e comando k6 de execução.
+  - Incluir “Como rodar” com `K6_RPS`/`K6_DURATION` de referência e baseURL.
+  - Entregáveis: bloco “Execução” por UC pronto para copy‑paste no teste.
+- Fase 5 — Consistência e Assinatura
+  - Checagens cruzadas (naming, links, endpoints válidos, dados referenciados existem, thresholds plausíveis).
+  - Atualizar índice geral, registrar versão/data e responsável.
+  - Entregáveis: `docs/casos_de_uso/README.md` com matriz final (UC ↔ endpoints ↔ testes ↔ dados).
+
+Template mínimo por UC
+- Título/ID e breve descrição (alinhada à DummyJSON).
+- Endpoints envolvidos (com referência a `docs/dummyJson/*`).
+- Dados de teste (arquivos em `data/test-data/`, colunas e cardinalidade).
+- Thresholds e tags obrigatórias (ex.: `feature`, `kind`, `uc`).
+- Execução (executor open‑model, `K6_RPS`, `K6_DURATION`, comando `k6 run`).
+
+Checklist de revisão por UC
+- Endpoints existem e correspondem à doc DummyJSON.
+- Escopo realista (sem persistência quando a API é simulada; evitar operações não suportadas).
+- Dados mapeados para `data/test-data/` (sem referenciar diretamente `fulldummyjsondata`).
+- Tags e métricas nos padrões definidos; thresholds plausíveis e úteis.
+- Documento objetivo (≤ 2 páginas) e com “Como rodar” claro.
+
+Estratégia de versionamento
+- Commits atômicos por UC (ex.: `docs(uc001): revisar e alinhar a DummyJSON`).
+- Push ao final de um bloco coeso (p.ex., UC001–UC003 revisados) para acionar CI e comparar com a branch Copilot.
+
+Métricas de sucesso da revisão
+- 13/13 UCs revisados, cada um com execução claramente definida e mapeamento de dados.
+- Redução de verbosidade sem perda de testabilidade.
+- Ausência de divergências com DummyJSON detectáveis na execução dos testes.
